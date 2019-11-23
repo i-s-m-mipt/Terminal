@@ -1,0 +1,49 @@
+std::string convert_from_locale_to_utf(const std::string & string) 
+{
+	boost::locale::generator generator;
+	generator.locale_cache_enabled(true);
+
+	std::locale locale = 
+		generator(boost::locale::util::get_system_locale());
+
+	return boost::locale::conv::to_utf < char > (string, locale);
+}
+
+std::string convert_from_utf_to_locale(const std::string & string) 
+{
+	boost::locale::generator generator;
+	generator.locale_cache_enabled(true);
+
+	std::locale locale =
+		generator(boost::locale::util::get_system_locale());
+
+	return boost::locale::conv::from_utf < char > (string, locale);
+}
+
+void stop_logging(boost::shared_ptr< sink_t >& sink)
+{
+	boost::shared_ptr< logging::core > core = logging::core::get();
+
+	// Remove the sink from the core, so that no records are passed to it
+	core->remove_sink(sink);
+
+	// Break the feeding loop
+	sink->stop();
+
+	// Flush all log records that may have left buffered
+	sink->flush();
+
+	sink.reset();
+}
+
+		 auto named_scope_formatter = boost::log::expressions::stream <<
+			 boost::log::expressions::format_named_scope(attributes.at(attribute_code_t::scope).first,
+			 boost::log::keywords::format = "%n(%f:%l)",
+			 boost::log::keywords::iteration = boost::log::expressions::reverse,
+			 boost::log::keywords::delimiter = " < ",
+			 boost::log::keywords::depth = 2);
+
+		 named_scope_formatter(record_view, stream);
+
+{ Logger::attribute_code_t::scope, std::make_pair("scope",
+	std::make_shared < boost::log::attributes::named_scope > ()) }
