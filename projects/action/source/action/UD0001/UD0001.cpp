@@ -33,6 +33,8 @@ namespace solution
 						{
 							auto file = market.get(asset, scale, 250);
 
+							// GIL
+
 							std::string message = boost::python::extract < std::string > (
 								module(asset.c_str(), scale.c_str(), file.string().c_str()));
 
