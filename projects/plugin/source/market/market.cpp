@@ -238,7 +238,8 @@ namespace solution
 						}
 						catch (...)
 						{
-							logger.write(Severity::error, quotes->asset_code() + " quotes update failed");
+							logger.write(Severity::error, quotes->asset_code() + 
+								" quotes update failed");
 						}
 					}
 				}

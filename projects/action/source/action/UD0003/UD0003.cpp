@@ -79,13 +79,12 @@ namespace solution
 
 					sout.str(std::string());
 
-					sout << " : " << std::left << std::setw(3) << std::setfill(' ') << scale << " | " <<
-						std::setprecision(3) << std::fixed <<
-						Key::BO << " = " << probability.BO << " | " <<
-						Key::BC << " = " << probability.BC << " | " <<
-						Key::SO << " = " << probability.SO << " | " <<
-						Key::SC << " = " << probability.SC << " | " << 
-						Key::WW << " = " << probability.WW << " | " << std::endl;
+					sout << "  " << std::setprecision(3) << std::fixed <<
+						Key::BO << " = " << probability.BO << "  " <<
+						Key::BC << " = " << probability.BC << "  " <<
+						Key::SO << " = " << probability.SO << "  " <<
+						Key::SC << " = " << probability.SC << "  " << 
+						Key::WW << " = " << probability.WW << std::endl;
 
 					text << sf::Text::Regular << sf::Color::White << sout.str();
 
@@ -103,7 +102,7 @@ namespace solution
 
 				try
 				{
-					sf::VideoMode mode(700, 600);
+					sf::VideoMode mode(590, 400);
 
 					sf::RenderWindow window(mode, "Technical Analysis", sf::Style::Close | sf::Style::Titlebar);
 

@@ -129,15 +129,14 @@ namespace solution
 			{
 				path_t path = asset + "_" + scale + Extension::txt;
 
+				shared::Python_GIL lock;
+
 				try
 				{
-					static Python_Initializer python_initializer;
+					boost::python::exec("from market import get", 
+						shared::Python::global(), shared::Python::global());
 
-					boost::python::object global = boost::python::import("__main__").attr("__dict__");
-
-					boost::python::exec("from market import get", global, global);
-
-					global["get"]
+					shared::Python::global()["get"]
 						(asset.c_str(), scale.c_str(), make_date(first).c_str(), make_date(last).c_str(), path.string().c_str());
 				}
 				catch (const boost::python::error_already_set &)
@@ -159,16 +158,16 @@ namespace solution
 
 					logger.write(Severity::error, message);
 				}
+				catch (const std::exception & exception)
+				{
+					shared::catch_handler < market_exception > (logger, exception);
+				}
 
 				return path;
 			}
 			catch (const std::exception & exception)
 			{
 				shared::catch_handler < market_exception > (logger, exception);
-			}
-			catch (...)
-			{
-				shared::catch_handler < market_exception > (logger);
 			}
 		}
 

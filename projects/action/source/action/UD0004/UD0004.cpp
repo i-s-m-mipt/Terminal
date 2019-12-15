@@ -16,7 +16,7 @@ namespace solution
 
 					sout << std::left << std::setw(4) << std::setfill(' ') << asset;
 
-					text << sf::Text::Bold << sf::Color::White << sout.str() << sf::Text::Regular << " | ";
+					text << sf::Text::Bold << sf::Color::White << sout.str() << sf::Text::Regular << " ";
 
 					sout.str(std::string());
 
@@ -30,28 +30,28 @@ namespace solution
 
 						sout << std::right << std::setw(8) << std::setfill(' ') << quotes.total_bid;
 						
-						text << sf::Color::White << " | " << sout.str() << " |\n";
+						text << sf::Color::White << " " << sout.str() << "\n";
 					}
 					else
 					if (1.0 * quotes.total_bid / std::max(quotes.total_ask, Quotes::volume_t(1)) - 1.0 > Quotes::threshold)
 					{
 						sout << std::right << std::setw(8) << std::setfill(' ') << quotes.total_ask;
 
-						text << sf::Color::White << sout.str() << " | ";
+						text << sf::Color::White << sout.str() << " ";
 
 						sout.str(std::string());
 						
 						sout << std::right << std::setw(8) << std::setfill(' ') << quotes.total_bid;
 						
-						text << sf::Color::Green << sout.str() << sf::Color::White << " |\n";
+						text << sf::Color::Green << sout.str() << sf::Color::White << "\n";
 					}
 					else
 					{
 						sout <<
-							std::right << std::setw(8) << std::setfill(' ') << quotes.total_ask << " | " <<
+							std::right << std::setw(8) << std::setfill(' ') << quotes.total_ask << " " <<
 							std::right << std::setw(8) << std::setfill(' ') << quotes.total_bid;
 
-						text << sf::Color::White << sout.str() << " |\n";
+						text << sf::Color::White << sout.str() << "\n";
 					}
 				}
 				catch (std::exception & exception)
@@ -66,7 +66,7 @@ namespace solution
 
 				try
 				{
-					sf::VideoMode mode(260, 600);
+					sf::VideoMode mode(260, 400);
 
 					sf::RenderWindow window(mode, "Quotes Analysis", sf::Style::Close | sf::Style::Titlebar);
 

@@ -107,6 +107,8 @@ namespace solution
 			try
 			{
 				load();
+
+				shared::Python::global();
 			}
 			catch (const std::exception & exception)
 			{

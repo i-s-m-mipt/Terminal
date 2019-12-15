@@ -37,9 +37,8 @@
 
 #include "quotes/quotes.hpp"
 
-#include "../python/python.hpp"
-
 #include "../../../../../shared/source/logger/logger.hpp"
+#include "../../../../../shared/source/python/python.hpp"
 
 namespace solution
 {

@@ -26,6 +26,7 @@
 #include "../memory/view/view.hpp"
 
 #include "../../../shared/source/logger/logger.hpp"
+#include "../../../shared/source/python/python.hpp"
 
 namespace solution 
 {

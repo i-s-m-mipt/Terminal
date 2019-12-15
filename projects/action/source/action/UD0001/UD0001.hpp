@@ -25,11 +25,11 @@
 
 #include "../action.hpp"
 #include "../shared/market/market.hpp"
-#include "../shared/python/python.hpp"
 
 #include "../../../../shared/source/config/config.hpp"
 #include "../../../../shared/source/logger/logger.hpp"
 #include "../../../../shared/source/memory/view/view_base.hpp"
+#include "../../../../shared/source/python/python.hpp"
 
 namespace solution
 {
