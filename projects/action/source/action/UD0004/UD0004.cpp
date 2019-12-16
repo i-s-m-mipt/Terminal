@@ -66,7 +66,7 @@ namespace solution
 
 				try
 				{
-					sf::VideoMode mode(260, 400);
+					sf::VideoMode mode(210, 400);
 
 					sf::RenderWindow window(mode, "Quotes Analysis", sf::Style::Close | sf::Style::Titlebar);
 
