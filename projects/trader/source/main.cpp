@@ -4,7 +4,7 @@
 
 #include <boost/extended/serialization/singleton.hpp>
 
-#include "system/system.hpp"
+#include "trader/trader.hpp"
 
 #include "../../shared/source/logger/logger.hpp"
 
@@ -13,7 +13,7 @@ using Logger = solution::shared::Logger;
 template < typename T >
 using singleton = boost::extended::serialization::singleton < T > ;
 
-using System = singleton < solution::trader::System > ;
+using Trader = singleton < solution::trader::Trader > ;
 
 int main(int argc, char * argv[])
 {
@@ -21,9 +21,9 @@ int main(int argc, char * argv[])
 
 	try
 	{
-		System system;
+		Trader trader;
 
-		system.instance().run();
+		trader.instance().run();
 
 		return EXIT_SUCCESS;
 	}
