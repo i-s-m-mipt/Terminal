@@ -40,10 +40,9 @@ namespace solution
 		{
 		public:
 
-			Python_GIL()
-			{
-				m_state = PyGILState_Ensure();
-			}
+			Python_GIL() : 
+				m_state(PyGILState_Ensure())
+			{}
 
 			~Python_GIL() noexcept
 			{
@@ -72,8 +71,6 @@ namespace solution
 
 				try
 				{
-					static wchar_t directory[] = L"python";
-
 					if (!Py_IsInitialized())
 					{
 						Py_SetPythonHome(directory);
@@ -81,8 +78,7 @@ namespace solution
 						Py_Initialize();
 					}
 
-					static boost::python::object global =
-						boost::python::import("__main__").attr("__dict__");
+					static auto global = boost::python::import("__main__").attr("__dict__");
 
 					return global;
 				}
@@ -91,6 +87,10 @@ namespace solution
 					catch_handler < python_exception > (logger, exception);
 				}
 			}
+
+		private:
+
+			static inline wchar_t directory[] = L"python";
 		};
 
 	} // namespace shared
