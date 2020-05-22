@@ -4,19 +4,41 @@ namespace solution
 {
 	namespace shared
 	{
-		boost::python::api::object_attribute & Python::global()
+		void Python::initialize()
 		{
-			if (!Py_IsInitialized())
+			RUN_LOGGER(logger);
+
+			try
 			{
-				Py_SetPythonHome(directory);
+				if (!Py_IsInitialized())
+				{
+					Py_SetPythonHome(directory);
 
-				Py_Initialize();
+					Py_Initialize();
+				}
+
+				m_state = PyGILState_Ensure();
+
+				m_global = boost::python::import("__main__").attr("__dict__");
 			}
+			catch (const std::exception & exception)
+			{
+				catch_handler < python_exception > (logger, exception);
+			}
+		}
 
-			static boost::python::api::object_attribute global = 
-				boost::python::import("__main__").attr("__dict__");
+		void Python::uninitialize()
+		{
+			RUN_LOGGER(logger);
 
-			return global;
+			try
+			{
+				PyGILState_Release(m_state);
+			}
+			catch (const std::exception & exception)
+			{
+				catch_handler < python_exception > (logger, exception);
+			}
 		}
 
 		std::string Python::exception() noexcept

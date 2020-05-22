@@ -14,15 +14,15 @@ namespace solution
 				{
 					static Market market;
 
-					shared::Python_GIL lock;
+					shared::Python python;
 
 					try
 					{
 						boost::python::object result =
 							boost::python::exec("from analysis.src.main import run",
-								shared::Python::global(), shared::Python::global());
+								python.global(), python.global());
 
-						boost::python::object module = shared::Python::global()["run"];
+						boost::python::object module = python.global()["run"];
 
 						for (const auto & asset : market.assets())
 						{

@@ -27,19 +27,19 @@ namespace solution
 				const path_t file = asset + "_" + scale + Extension::txt;
 				const path_t path = directory / file;
 
-				shared::Python_GIL lock;
+				shared::Python python;
 
 				try
 				{
 					boost::python::exec("from market import get", 
-						shared::Python::global(), shared::Python::global());
+						python.global(), python.global());
 
-					shared::Python::global()["get"]
+					python.global()["get"]
 						(asset.c_str(), scale.c_str(), make_date(first).c_str(), make_date(last).c_str(), path.string().c_str());
 				}
 				catch (const boost::python::error_already_set &)
 				{
-					logger.write(Severity::error, shared::Python::exception());
+					logger.write(Severity::error, python.exception());
 				}
 				catch (const std::exception & exception)
 				{

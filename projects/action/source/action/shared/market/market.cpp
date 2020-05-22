@@ -129,14 +129,13 @@ namespace solution
 			{
 				path_t path = asset + "_" + scale + Extension::txt;
 
-				shared::Python_GIL lock;
+				shared::Python python;
 
 				try
 				{
-					boost::python::exec("from market import get", 
-						shared::Python::global(), shared::Python::global());
+					boost::python::exec("from market import get", python.global(), python.global());
 
-					shared::Python::global()["get"]
+					python.global()["get"]
 						(asset.c_str(), scale.c_str(), make_date(first).c_str(), make_date(last).c_str(), path.string().c_str());
 				}
 				catch (const boost::python::error_already_set &)

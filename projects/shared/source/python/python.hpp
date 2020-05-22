@@ -15,6 +15,8 @@
 
 #include <boost/python.hpp>
 
+#include "../../../shared/source/logger/logger.hpp"
+
 namespace solution
 {
 	namespace shared
@@ -34,19 +36,20 @@ namespace solution
 			~python_exception() noexcept = default;
 		};
 
-		class Python_GIL
+		class Python
 		{
 		public:
 
-			Python_GIL() : 
-				m_state(PyGILState_Ensure())
-			{}
+			Python()
+			{
+				initialize();
+			}
 
-			~Python_GIL() noexcept
+			~Python() noexcept
 			{
 				try
 				{
-					PyGILState_Release(m_state);
+					uninitialize();
 				}
 				catch (...)
 				{
@@ -56,20 +59,32 @@ namespace solution
 
 		private:
 
-			mutable PyGILState_STATE m_state;
-		};
+			void initialize();
 
-		class Python
-		{
+			void uninitialize();
+
 		public:
 
-			static boost::python::api::object_attribute & global();
+			auto & global() const noexcept
+			{
+				return m_global;
+			}
 
-			static std::string exception() noexcept;
+		public:
+
+			std::string exception() noexcept;
 
 		private:
 
 			static inline wchar_t directory[] = L"python";
+
+		private:
+
+			boost::python::api::object m_global;
+
+		private:
+
+			mutable PyGILState_STATE m_state;
 		};
 
 	} // namespace shared
