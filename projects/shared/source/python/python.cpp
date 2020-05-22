@@ -13,7 +13,8 @@ namespace solution
 				Py_Initialize();
 			}
 
-			static auto global = boost::python::import("__main__").attr("__dict__");
+			static boost::python::api::object_attribute global = 
+				boost::python::import("__main__").attr("__dict__");
 
 			return global;
 		}
@@ -33,7 +34,7 @@ namespace solution
 			boost::python::handle <> handle_stack(boost::python::allow_null(stack));
 
 			std::string message = boost::python::extract < std::string > (
-				!handle_value ? boost::python::str(handle_error) : boost::python::str(handle_value));
+				handle_value ? boost::python::str(handle_value) : boost::python::str(handle_error));
 
 			return message;
 		}
