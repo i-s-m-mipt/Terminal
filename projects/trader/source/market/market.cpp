@@ -4,15 +4,14 @@ namespace solution
 {
 	namespace trader
 	{
-		using Severity = shared::Logger::Severity;
-
 		Market::path_t Market::get(const std::string & asset, const std::string & scale, time_point_t first, time_point_t last) const
 		{
 			RUN_LOGGER(logger);
 
 			try
 			{
-				path_t path = asset + "_" + scale + Extension::txt;
+				path_t file = asset + "_" + scale + Extension::txt;
+				path_t path = (directory / file);
 
 				shared::Python_GIL lock;
 

@@ -66,6 +66,8 @@ namespace solution
 
 			using date_t = std::string;
 
+			using Severity = shared::Logger::Severity;
+
 		private:
 
 			struct Extension
@@ -97,7 +99,7 @@ namespace solution
 			
 		private:
 
-			static inline const path_t directory = "market/candles";
+			static inline const path_t directory = "market/data";
 		};
 
 	} // namespace trader
