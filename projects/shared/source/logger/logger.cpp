@@ -1,7 +1,5 @@
 #include "logger.hpp"
 
-#define ENABLE_LOGGER_WRITE 1
-
 namespace solution
 {
 	namespace shared
@@ -178,27 +176,24 @@ namespace solution
 		{
 			try
 			{
-				if (ENABLE_LOGGER_WRITE)
+				if (!status)
 				{
-					if (!status)
-					{
-						throw logger_exception("logger is not initialized");
-					}
+					throw logger_exception("logger is not initialized");
+				}
 
-					auto record = logger.open_record(boost::log::keywords::severity = severity);
+				auto record = logger.open_record(boost::log::keywords::severity = severity);
 
-					if (record)
-					{
-						boost::log::record_ostream stream(record);
+				if (record)
+				{
+					boost::log::record_ostream stream(record);
 
-						stream << m_scope << delimeter << message;
+					stream << m_scope << delimeter << message;
 
-						logger.push_record(std::move(record));
-					}
-					else
-					{
-						throw logger_exception("record open error");
-					}
+					logger.push_record(std::move(record));
+				}
+				else
+				{
+					throw logger_exception("record open error");
 				}
 			}
 			catch (const std::exception & exception)

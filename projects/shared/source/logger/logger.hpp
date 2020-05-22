@@ -17,7 +17,11 @@
 #  define FUNCTION __func__
 #endif // #if defined(_MSC_VER) || defined(__GNUC__)
 
-#define ENABLE_LOGGER_RAII_TRACE 0
+#ifndef NDEBUG
+#  define ENABLE_LOGGER_RAII_TRACE true
+#else
+#  define ENABLE_LOGGER_RAII_TRACE false
+#endif
 
 #include <atomic>
 #include <cstddef>
