@@ -83,9 +83,16 @@ namespace solution
 
 		public:
 
-			Market() noexcept = default;
+			Market()
+			{
+				initialize();
+			}
 
 			~Market() noexcept = default;
+
+		private:
+
+			void initialize();
 
 		public:
 

@@ -4,14 +4,28 @@ namespace solution
 {
 	namespace trader
 	{
+		void Market::initialize()
+		{
+			RUN_LOGGER(logger);
+
+			try
+			{
+				std::filesystem::create_directory(directory);
+			}
+			catch (const std::exception & exception)
+			{
+				shared::catch_handler < market_exception > (logger, exception);
+			}
+		}
+
 		Market::path_t Market::get(const std::string & asset, const std::string & scale, time_point_t first, time_point_t last) const
 		{
 			RUN_LOGGER(logger);
 
 			try
 			{
-				path_t file = asset + "_" + scale + Extension::txt;
-				path_t path = (directory / file);
+				const path_t file = asset + "_" + scale + Extension::txt;
+				const path_t path = directory / file;
 
 				shared::Python_GIL lock;
 
