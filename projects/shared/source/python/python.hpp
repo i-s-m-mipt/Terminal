@@ -15,8 +15,6 @@
 
 #include <boost/python.hpp>
 
-#include "../logger/logger.hpp"
-
 namespace solution
 {
 	namespace shared
@@ -65,28 +63,9 @@ namespace solution
 		{
 		public:
 
-			static auto & global()
-			{
-				RUN_LOGGER(logger);
+			static boost::python::api::object_attribute & global();
 
-				try
-				{
-					if (!Py_IsInitialized())
-					{
-						Py_SetPythonHome(directory);
-
-						Py_Initialize();
-					}
-
-					static auto global = boost::python::import("__main__").attr("__dict__");
-
-					return global;
-				}
-				catch (const std::exception & exception)
-				{
-					catch_handler < python_exception > (logger, exception);
-				}
-			}
+			static std::string exception() noexcept;
 
 		private:
 
