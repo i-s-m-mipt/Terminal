@@ -167,7 +167,7 @@ namespace solution
 
 			record_t parse_market_data_line(const std::string & line);
 
-			time_point_t parse_time(const std::string & source);
+			time_point_t parse_date_time(Candle::date_t date, Candle::time_t time);
 
 		public:
 
