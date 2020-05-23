@@ -88,7 +88,7 @@ namespace solution
 				{
 					for (const auto & scale : m_scales)
 					{
-						auto path = m_market.get(asset, scale, first, last);
+						parse_market_data(asset, m_market.get(asset, scale, first, last));
 					}
 				}
 			}
@@ -122,9 +122,14 @@ namespace solution
 			}
 			catch (const std::exception & exception)
 			{
-				shared::catch_handler < trader_exception > 
-(logger, exception);
+				shared::catch_handler < trader_exception > (logger, exception);
 			}
+		}
+
+		void Trader::parse_market_data(
+			const std::string & asset, const std::filesystem::path & path)
+		{
+
 		}
 
 		void Trader::run()

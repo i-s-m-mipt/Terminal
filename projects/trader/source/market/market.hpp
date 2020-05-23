@@ -58,8 +58,6 @@ namespace solution
 
 			using clock_t = std::chrono::system_clock;
 
-			using path_t = std::filesystem::path;
-
 		private:
 
 			using time_point_t = std::chrono::time_point < clock_t > ;
@@ -96,9 +94,11 @@ namespace solution
 
 		public:
 
-			path_t get(const std::string & asset, const std::string & scale, time_point_t first, time_point_t last) const;
+			std::filesystem::path get(
+				const std::string & asset, const std::string & scale, time_point_t first, time_point_t last) const;
 			
-			// path_t get(const std::string & asset, const std::string & scale, std::size_t quantity) const;
+			// std::filesystem::path get(
+			//	const std::string & asset, const std::string & scale, std::size_t quantity) const;
 			
 		private:
 
@@ -106,7 +106,7 @@ namespace solution
 			
 		private:
 
-			static inline const path_t directory = "market/data";
+			static inline const std::filesystem::path directory = "market/data";
 		};
 
 	} // namespace trader

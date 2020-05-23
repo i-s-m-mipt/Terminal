@@ -53,15 +53,9 @@ namespace solution
 
 				struct File
 				{
-					using path_t = std::filesystem::path;
-
-					static inline const path_t assets = "trader/data/assets.data";
-					static inline const path_t scales = "trader/data/scales.data";
+					static inline const std::filesystem::path assets = "trader/data/assets.data";
+					static inline const std::filesystem::path scales = "trader/data/scales.data";
 				};
-
-			private:
-
-				using path_t = File::path_t;
 
 			public:
 
@@ -90,6 +84,8 @@ namespace solution
 
 			void load_assets();
 			void load_scales();
+
+			void parse_market_data(const std::string & asset, const std::filesystem::path & path);
 
 		public:
 

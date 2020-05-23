@@ -18,14 +18,15 @@ namespace solution
 			}
 		}
 
-		Market::path_t Market::get(const std::string & asset, const std::string & scale, time_point_t first, time_point_t last) const
+		std::filesystem::path Market::get(
+			const std::string & asset, const std::string & scale, time_point_t first, time_point_t last) const
 		{
 			RUN_LOGGER(logger);
 
 			try
 			{
-				const path_t file = asset + "_" + scale + Extension::txt;
-				const path_t path = directory / file;
+				const std::filesystem::path file = asset + "_" + scale + Extension::txt;
+				const std::filesystem::path path = directory / file;
 
 				shared::Python python;
 
