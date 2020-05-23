@@ -129,7 +129,95 @@ namespace solution
 		void Trader::parse_market_data(
 			const std::string & asset, const std::filesystem::path & path)
 		{
+			RUN_LOGGER(logger);
 
+			try
+			{
+				std::fstream fin(path.string(), std::ios::in);
+
+				if (!fin)
+				{
+					throw trader_exception("cannot open file " + path.string());
+				}
+
+				std::string line;
+
+				std::vector < record_t > data;
+
+				while (std::getline(fin, line))
+				{
+					data.push_back(parse_market_data_line(line));
+				}
+			}
+			catch (const std::exception & exception)
+			{
+				shared::catch_handler < trader_exception > (logger, exception);
+			}
+		}
+
+		Trader::record_t Trader::parse_market_data_line(const std::string & line)
+		{
+			RUN_LOGGER(logger);
+
+			try
+			{
+				Candle_Parser < std::string::const_iterator > parser;
+
+				auto first = std::begin(line);
+				auto last  = std::end  (line);
+
+				Candle candle;
+
+				auto result = boost::spirit::qi::phrase_parse(
+					first, last, parser, boost::spirit::qi::blank, candle);
+
+				if (result)
+				{
+					auto source = std::to_string(candle.date) + std::to_string(candle.time);
+
+					source.insert(std::next(source.begin(), 4 + 0 + 0), time_separator);
+					source.insert(std::next(source.begin(), 4 + 2 + 1), time_separator);
+					source.insert(std::next(source.begin(), 4 + 4 + 2), time_separator);
+					source.insert(std::next(source.begin(), 4 + 6 + 3), time_separator);
+					source.insert(std::next(source.begin(), 4 + 8 + 4), time_separator);
+
+					return std::make_pair(parse_time(source), candle.price_close);
+				}
+				else
+				{
+					throw trader_exception("cannot parse line " + line);
+				}
+			}
+			catch (const std::exception & exception)
+			{
+				shared::catch_handler < trader_exception > (logger, exception);
+			}
+		}
+
+		Trader::time_point_t Trader::parse_time(const std::string & source)
+		{
+			RUN_LOGGER(logger);
+
+			try
+			{
+				std::tm time = {};
+
+				std::istringstream sin(source);
+				sin.imbue(std::locale(setlocale(LC_ALL, nullptr)));
+				// https://stackoverflow.com/questions/35041344/trying-to-use-stdget-time-to-parse-yymmdd-and-failing#comment69466398_35041344
+				sin >> std::get_time(&time, "%Y.%m.%d.%H.%M.%S");
+
+				if (sin.fail())
+				{
+					throw trader_exception("cannot parse date-time " + source);
+				}
+
+				return clock_t::from_time_t(std::mktime(&time));
+			}
+			catch (const std::exception & exception)
+			{
+				shared::catch_handler < trader_exception >(logger, exception);
+			}
 		}
 
 		void Trader::run()
