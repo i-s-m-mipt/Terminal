@@ -219,6 +219,11 @@ namespace solution
 			}
 		}
 
+		void Trader::find_levels(const plot_t & plot)
+		{
+
+		}
+
 		void Trader::run()
 		{
 			RUN_LOGGER(logger);

@@ -20,6 +20,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -77,6 +78,29 @@ namespace solution
 		private:
 
 			using plot_t = std::vector < Point > ;
+
+		private:
+
+			enum class Level_Resolution
+			{
+				hour,
+				day,
+				week,
+				month,
+			};
+
+		private:
+
+			struct Level
+			{
+				std::size_t lifetime;
+				double price;
+			};
+
+		private:
+
+			using levels_container_t = std::unordered_map < std::string, 
+				std::unordered_map < Level_Resolution, std::vector < Level > > > ;
 
 		private:
 
@@ -179,7 +203,7 @@ namespace solution
 
 			time_point_t parse(const Candle::date_t & date, const Candle::time_t & time) const;
 
-			void find_levels();
+			void find_levels(const plot_t & plot);
 
 		public:
 
