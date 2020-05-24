@@ -16,6 +16,7 @@
 #include <iostream>
 #include <iterator>
 #include <locale>
+#include <map>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -65,7 +66,17 @@ namespace solution
 
 			using time_point_t = clock_t::time_point;
 
-			using record_t = std::pair < time_point_t, double > ;
+		private:
+
+			struct Point
+			{
+				time_point_t time;
+				double price_close;
+			};
+
+		private:
+
+			using plot_t = std::vector < Point > ;
 
 		private:
 
@@ -162,13 +173,13 @@ namespace solution
 			void load_assets();
 			void load_scales();
 
-			void parse_market_data(
-				const std::string & asset, const std::filesystem::path & path);
+			plot_t make_plot(const std::filesystem::path & path) const;
 
-			record_t parse_market_data_line(const std::string & line);
+			Point parse(const std::string & line) const;
 
-			time_point_t parse_date_time(
-				const Candle::date_t & date, const Candle::time_t & time);
+			time_point_t parse(const Candle::date_t & date, const Candle::time_t & time) const;
+
+			void find_levels();
 
 		public:
 

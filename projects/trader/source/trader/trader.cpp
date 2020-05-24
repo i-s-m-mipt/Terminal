@@ -88,7 +88,10 @@ namespace solution
 				{
 					for (const auto & scale : m_scales)
 					{
-						parse_market_data(asset, m_market.get(asset, scale, first, last));
+						if (scale == "M1")
+						{
+							auto plot = make_plot(m_market.get(asset, scale, first, last));
+						}
 					}
 				}
 			}
@@ -126,8 +129,7 @@ namespace solution
 			}
 		}
 
-		void Trader::parse_market_data(
-			const std::string & asset, const std::filesystem::path & path)
+		Trader::plot_t Trader::make_plot(const std::filesystem::path & path) const
 		{
 			RUN_LOGGER(logger);
 
@@ -140,14 +142,18 @@ namespace solution
 					throw trader_exception("cannot open file " + path.string());
 				}
 
-				std::string line;
+				plot_t plot; 
+				
+				plot.reserve(365);
 
-				std::vector < record_t > data;
+				std::string line;
 
 				while (std::getline(fin, line))
 				{
-					data.push_back(parse_market_data_line(line));
+					plot.push_back(parse(line));
 				}
+
+				return plot;
 			}
 			catch (const std::exception & exception)
 			{
@@ -155,7 +161,7 @@ namespace solution
 			}
 		}
 
-		Trader::record_t Trader::parse_market_data_line(const std::string & line)
+		Trader::Point Trader::parse(const std::string & line) const
 		{
 			RUN_LOGGER(logger);
 
@@ -173,8 +179,7 @@ namespace solution
 
 				if (result)
 				{
-					return std::make_pair(parse_date_time(
-						candle.date, candle.time), candle.price_close);
+					return Point { parse(candle.date, candle.time), candle.price_close };
 				}
 				else
 				{
@@ -187,8 +192,7 @@ namespace solution
 			}
 		}
 
-		Trader::time_point_t Trader::parse_date_time(
-			const Candle::date_t & date, const Candle::time_t & time)
+		Trader::time_point_t Trader::parse(const Candle::date_t & date, const Candle::time_t & time) const
 		{
 			RUN_LOGGER(logger);
 
