@@ -89,8 +89,8 @@ namespace solution
 
 			struct Candle
 			{
-				using date_t = std::uint32_t;
-				using time_t = std::uint32_t;
+				using date_t = std::string;
+				using time_t = std::string;
 
 				using price_t = double;
 
@@ -124,13 +124,13 @@ namespace solution
 					static const auto separator = ',';
 
 					start %=
-						boost::spirit::qi::uint_   >> separator >>
-						boost::spirit::qi::uint_   >> separator >>
-						boost::spirit::qi::double_ >> separator >>
-						boost::spirit::qi::double_ >> separator >>
-						boost::spirit::qi::double_ >> separator >>
-						boost::spirit::qi::double_ >> separator >>
-						boost::spirit::qi::ulong_long;
+						+(boost::spirit::qi::char_ - separator) >> separator >>
+						+(boost::spirit::qi::char_ - separator) >> separator >>
+						  boost::spirit::qi::double_			>> separator >>
+						  boost::spirit::qi::double_			>> separator >>
+						  boost::spirit::qi::double_			>> separator >>
+						  boost::spirit::qi::double_			>> separator >>
+						  boost::spirit::qi::ulong_long;
 				}
 
 				~Candle_Parser() noexcept = default;
@@ -167,17 +167,14 @@ namespace solution
 
 			record_t parse_market_data_line(const std::string & line);
 
-			time_point_t parse_date_time(Candle::date_t date, Candle::time_t time);
+			time_point_t parse_date_time(
+				const Candle::date_t & date, const Candle::time_t & time);
 
 		public:
 
 			virtual void run() override;
 
 			virtual void stop() override;
-
-		private:
-
-			static inline const char time_separator = '.';
 
 		private:
 

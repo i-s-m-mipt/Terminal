@@ -173,14 +173,8 @@ namespace solution
 
 				if (result)
 				{
-					//auto source = std::to_string(candle.date) + std::to_string(candle.time);
-					//source.insert(std::next(source.begin(), 4 + 0 + 0), time_separator);
-					//source.insert(std::next(source.begin(), 4 + 2 + 1), time_separator);
-					//source.insert(std::next(source.begin(), 4 + 4 + 2), time_separator);
-					//source.insert(std::next(source.begin(), 4 + 6 + 3), time_separator);
-					//source.insert(std::next(source.begin(), 4 + 8 + 4), time_separator);
-
-					return std::make_pair(parse_date_time(candle.date, candle.time), candle.price_close);
+					return std::make_pair(parse_date_time(
+						candle.date, candle.time), candle.price_close);
 				}
 				else
 				{
@@ -193,30 +187,25 @@ namespace solution
 			}
 		}
 
-		Trader::time_point_t Trader::parse_date_time(Candle::date_t date, Candle::time_t time)
+		Trader::time_point_t Trader::parse_date_time(
+			const Candle::date_t & date, const Candle::time_t & time)
 		{
 			RUN_LOGGER(logger);
 
 			try
 			{
-				std::tm tm = {};
+				std::tm tm;
 
-				//std::istringstream sin(source);
-				//sin.imbue(std::locale(setlocale(LC_ALL, nullptr)));
-				//// https://stackoverflow.com/questions/35041344/trying-to-use-stdget-time-to-parse-yymmdd-and-failing#comment69466398_35041344
-				//sin >> std::get_time(&time, "%Y.%m.%d.%H.%M.%S");
-				//if (sin.fail())
-				//{
-				//	throw trader_exception("cannot parse date-time " + source);
-				//}
+				auto source = date + " " + time;
 
-				tm.tm_year = date / 10000 - 1900;
-				tm.tm_mon  = date % 10000 / 100 - 1;
-				tm.tm_mday = date % 100;
+				std::istringstream sin(source);
 
-				tm.tm_hour = time / 10000;
-				tm.tm_min  = time % 100 / 100;
-				tm.tm_sec  = time % 100;
+				sin >> std::get_time(&tm, "%d/%m/%y %H:%M:%S");
+
+				if (sin.fail())
+				{
+					throw trader_exception("cannot parse date-time " + source);
+				}
 
 				return clock_t::from_time_t(std::mktime(&tm));
 			}
