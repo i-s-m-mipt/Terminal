@@ -90,7 +90,11 @@ namespace solution
 					{
 						if (scale == "M1")
 						{
-							auto plot = make_plot(m_market.get(asset, scale, first, last));
+							m_levels[asset][Level_Resolution::hour] =
+								make_levels(make_points(m_market.get(asset, scale, first, last)), 
+									Level_Resolution::hour);
+
+
 						}
 					}
 				}
@@ -129,7 +133,59 @@ namespace solution
 			}
 		}
 
-		Trader::plot_t Trader::make_plot(const std::filesystem::path & path) const
+		std::vector < Trader::Level > Trader::make_levels(
+			const std::vector < Point > & points, Level_Resolution level_resolution) const
+		{
+			RUN_LOGGER(logger);
+
+			try
+			{
+				auto frame = resolution_to_frame(level_resolution);
+
+				std::vector < Level > levels;
+
+				for (auto first = points.begin(); first != points.end(); )
+				{
+					auto last = std::next(first, std::min(frame, 
+						static_cast < decltype(frame) > (std::distance(first, points.end()))));
+
+					auto extremum = std::minmax_element(
+						first, last, [](const auto & lhs, const auto & rhs)
+					{
+						return (lhs.price < rhs.price);
+					});
+
+					if ((extremum.first == first && first != points.begin() &&
+						std::prev(first)->price > extremum.first->price) ||
+						(extremum.first == std::prev(last) && last != points.end() &&
+						last->price > extremum.first->price) ||
+						(extremum.first != first && extremum.first != std::prev(last)))
+					{
+						levels.push_back(Level{ extremum.first->time, extremum.first->price, 0U });
+					}
+
+					if ((extremum.second == first && first != points.begin() &&
+						std::prev(first)->price < extremum.second->price) ||
+						(extremum.second == std::prev(last) && last != points.end() &&
+						last->price > extremum.second->price) ||
+						(extremum.second != first && extremum.second != std::prev(last)))
+					{
+						levels.push_back(Level{ extremum.second->time, extremum.second->price, 0U });
+					}
+
+					first = last;
+				}
+
+				return levels;
+			}
+			catch (const std::exception & exception)
+			{
+				shared::catch_handler < trader_exception > (logger, exception);
+			}
+		}
+
+		std::vector < Trader::Point > Trader::make_points(
+			const std::filesystem::path & path) const
 		{
 			RUN_LOGGER(logger);
 
@@ -142,7 +198,7 @@ namespace solution
 					throw trader_exception("cannot open file " + path.string());
 				}
 
-				plot_t plot; 
+				std::vector < Point > plot;
 				
 				plot.reserve(365);
 
@@ -192,7 +248,8 @@ namespace solution
 			}
 		}
 
-		Trader::time_point_t Trader::parse(const Candle::date_t & date, const Candle::time_t & time) const
+		Trader::time_point_t Trader::parse(
+			const Candle::date_t & date, const Candle::time_t & time) const
 		{
 			RUN_LOGGER(logger);
 
@@ -219,9 +276,46 @@ namespace solution
 			}
 		}
 
-		void Trader::find_levels(const plot_t & plot)
+		std::size_t Trader::resolution_to_frame(Level_Resolution level_resolution) const
 		{
+			RUN_LOGGER(logger);
 
+			try
+			{
+				switch (level_resolution)
+				{
+				case Level_Resolution::hour:
+					return 60U;
+				case Level_Resolution::day:
+					return 60U * 24U;
+				case Level_Resolution::week:
+					return 60U * 24U * 7U;
+				case Level_Resolution::month:
+					return 60U * 24U * 31U;
+				default:
+					throw trader_exception("unknown level resolution");
+					break;
+				}
+			}
+			catch (const std::exception & exception)
+			{
+				shared::catch_handler < trader_exception > (logger, exception);
+			}
+		}
+
+		template < typename D >
+		D Trader::duration_since_time_point(time_point_t time_point) const
+		{
+			RUN_LOGGER(logger);
+
+			try
+			{
+				return std::chrono::duration_cast < D > (clock_t::now() - time_point);
+			}
+			catch (const std::exception & exception)
+			{
+				shared::catch_handler < trader_exception > (logger, exception);
+			}
 		}
 
 		void Trader::run()

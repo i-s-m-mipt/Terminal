@@ -7,10 +7,12 @@
 #  pragma once
 #endif // #ifdef BOOST_HAS_PRAGMA_ONCE
 
+#include <algorithm>
 #include <chrono>
 #include <ctime>
 #include <cstdint>
 #include <exception>
+#include <execution>
 #include <filesystem>
 #include <iomanip>
 #include <iostream>
@@ -72,12 +74,8 @@ namespace solution
 			struct Point
 			{
 				time_point_t time;
-				double price_close;
+				double price;
 			};
-
-		private:
-
-			using plot_t = std::vector < Point > ;
 
 		private:
 
@@ -93,8 +91,9 @@ namespace solution
 
 			struct Level
 			{
-				std::size_t lifetime;
+				time_point_t time;
 				double price;
+				std::size_t strength;
 			};
 
 		private:
@@ -197,13 +196,19 @@ namespace solution
 			void load_assets();
 			void load_scales();
 
-			plot_t make_plot(const std::filesystem::path & path) const;
+			std::vector < Level > make_levels(
+				const std::vector < Point > & points, Level_Resolution level_resolution) const;
+
+			std::vector < Point > make_points(const std::filesystem::path & path) const;
 
 			Point parse(const std::string & line) const;
 
 			time_point_t parse(const Candle::date_t & date, const Candle::time_t & time) const;
 
-			void find_levels(const plot_t & plot);
+			std::size_t resolution_to_frame(Level_Resolution level_resolution) const;
+			
+			template < typename D = std::chrono::duration < int, std::ratio < 60 * 60 * 24 > > >
+			D duration_since_time_point(time_point_t time_point) const;
 
 		public:
 
@@ -217,6 +222,8 @@ namespace solution
 			scales_container_t m_scales;
 
 			Market m_market;
+
+			levels_container_t m_levels;
 		};
 
 	} // namespace trader
