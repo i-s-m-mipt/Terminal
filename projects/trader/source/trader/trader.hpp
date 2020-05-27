@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cmath>
 #include <ctime>
 #include <cstdint>
 #include <exception>
@@ -196,6 +197,8 @@ namespace solution
 			void load_assets();
 			void load_scales();
 
+			std::vector < Level > reduce_levels(std::vector < Level > && levels) const;
+
 			std::vector < Level > make_levels(
 				const std::vector < Point > & points, Level_Resolution level_resolution) const;
 
@@ -215,6 +218,12 @@ namespace solution
 			virtual void run() override;
 
 			virtual void stop() override;
+
+		private:
+
+			static inline const std::string initial_scale = "M1";
+
+			static inline const double price_deviation = 0.005;
 
 		private:
 

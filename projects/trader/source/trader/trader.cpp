@@ -88,13 +88,18 @@ namespace solution
 				{
 					for (const auto & scale : m_scales)
 					{
-						if (scale == "M1")
+						if (scale == initial_scale)
 						{
+							auto points = make_points(m_market.get(asset, scale, first, last));
+
 							m_levels[asset][Level_Resolution::hour] =
-								make_levels(make_points(m_market.get(asset, scale, first, last)), 
-									Level_Resolution::hour);
-
-
+								reduce_levels(make_levels(points, Level_Resolution::hour));
+							m_levels[asset][Level_Resolution::day] =
+								reduce_levels(make_levels(points, Level_Resolution::day));
+							m_levels[asset][Level_Resolution::week] =
+								reduce_levels(make_levels(points, Level_Resolution::week));
+							m_levels[asset][Level_Resolution::month] =
+								reduce_levels(make_levels(points, Level_Resolution::month));
 						}
 					}
 				}
@@ -126,6 +131,40 @@ namespace solution
 			try
 			{
 				Data::load_scales(m_scales);
+			}
+			catch (const std::exception & exception)
+			{
+				shared::catch_handler < trader_exception > (logger, exception);
+			}
+		}
+
+		std::vector < Trader::Level > Trader::reduce_levels(std::vector < Level > && levels) const
+		{
+			RUN_LOGGER(logger);
+
+			try
+			{
+				if (levels.size() > 1)
+				{
+					for (auto first = levels.begin(); first != std::prev(levels.end()); ++first)
+					{
+						for (auto current = std::next(first); current != levels.end();)
+						{
+							if (std::abs(first->price - current->price) / first->price <= price_deviation)
+							{
+								++first->strength;
+
+								current = levels.erase(current);
+							}
+							else
+							{
+								++current;
+							}
+						}
+					}
+				}
+
+				return levels;
 			}
 			catch (const std::exception & exception)
 			{
