@@ -21,9 +21,15 @@ int main(int argc, char * argv[])
 
 	try
 	{
+		using Level_Resolution = solution::trader::Trader::Level_Resolution;
+
 		Trader trader;
 
-		trader.instance().run();
+		trader.instance().print_levels("GAZP", Level_Resolution::day);
+		trader.instance().print_levels("GAZP", Level_Resolution::week);
+		trader.instance().print_levels("GAZP", Level_Resolution::month);
+
+		// trader.instance().run();
 
 		return EXIT_SUCCESS;
 	}

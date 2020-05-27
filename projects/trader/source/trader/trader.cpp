@@ -92,8 +92,6 @@ namespace solution
 						{
 							auto points = make_points(m_market.get(asset, scale, first, last));
 
-							m_levels[asset][Level_Resolution::hour] =
-								reduce_levels(make_levels(points, Level_Resolution::hour));
 							m_levels[asset][Level_Resolution::day] =
 								reduce_levels(make_levels(points, Level_Resolution::day));
 							m_levels[asset][Level_Resolution::week] =
@@ -323,14 +321,12 @@ namespace solution
 			{
 				switch (level_resolution)
 				{
-				case Level_Resolution::hour:
-					return 60U;
 				case Level_Resolution::day:
-					return 60U * 24U;
+					return 60U * 8U + 40U;
 				case Level_Resolution::week:
-					return 60U * 24U * 7U;
+					return (60U * 8U + 40U) * 5U;
 				case Level_Resolution::month:
-					return 60U * 24U * 31U;
+					return (60U * 8U + 40U) * 28U;
 				default:
 					throw trader_exception("unknown level resolution");
 					break;
@@ -342,14 +338,71 @@ namespace solution
 			}
 		}
 
-		template < typename D >
-		D Trader::duration_since_time_point(time_point_t time_point) const
+		void Trader::print_levels(
+			const std::string & asset, Level_Resolution level_resolution) const
 		{
 			RUN_LOGGER(logger);
 
 			try
 			{
-				return std::chrono::duration_cast < D > (clock_t::now() - time_point);
+				std::cout << "[" << asset << "] " << "resolution: ";
+
+				switch (level_resolution)
+				{
+				case Level_Resolution::day:
+					std::cout << "D";
+					break;
+				case Level_Resolution::week:
+					std::cout << "W";
+					break;
+				case Level_Resolution::month:
+					std::cout << "M";
+					break;
+				default:
+					throw trader_exception("unknown level resolution");
+					break;
+				}
+
+				std::cout << std::endl << std::endl;
+
+				for (const auto & level : m_levels.at(asset).at(level_resolution))
+				{
+					std::cout << level << std::endl;
+				}
+
+				std::cout << std::endl;
+			}
+			catch (const std::exception & exception)
+			{
+				shared::catch_handler < trader_exception > (logger, exception);
+			}
+		}
+
+		template < typename Duration, typename Clock >
+		Duration duration_since_time_point(typename Clock::time_point time_point)
+		{
+			return std::chrono::duration_cast < Duration > (Clock::now() - time_point);
+		}
+
+		std::ostream & operator<<(std::ostream & stream, const Trader::Level & level)
+		{
+			RUN_LOGGER(logger);
+
+			try
+			{
+				using days = std::chrono::duration < int, std::ratio < 60 * 60 * 24 > > ;
+
+				auto time = decltype(level.time)::clock::to_time_t(level.time);
+
+				auto tm = *std::localtime(&time);
+
+				return (stream << 
+					"price: " /*<< std::setw(8) << std::setfill(' ') << std::right*/ << 
+						std::setprecision(2) << std::fixed << level.price << " " <<
+					"since: " << std::put_time(&tm, "%y.%m.%d") << " "
+					"alive: " << std::setw(3) << std::setfill(' ') << std::right <<
+						duration_since_time_point < days, Trader::clock_t > (level.time).count() << " " <<
+					"power: " << level.strength);
 			}
 			catch (const std::exception & exception)
 			{

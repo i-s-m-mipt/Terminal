@@ -20,6 +20,7 @@
 #include <iterator>
 #include <locale>
 #include <map>
+#include <ostream>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -78,11 +79,10 @@ namespace solution
 				double price;
 			};
 
-		private:
+		public:
 
 			enum class Level_Resolution
 			{
-				hour,
 				day,
 				week,
 				month,
@@ -209,9 +209,15 @@ namespace solution
 			time_point_t parse(const Candle::date_t & date, const Candle::time_t & time) const;
 
 			std::size_t resolution_to_frame(Level_Resolution level_resolution) const;
-			
-			template < typename D = std::chrono::duration < int, std::ratio < 60 * 60 * 24 > > >
-			D duration_since_time_point(time_point_t time_point) const;
+
+		public:
+
+			void print_levels(
+				const std::string & asset, Level_Resolution level_resolution) const;
+
+		private:
+
+			friend std::ostream & operator<<(std::ostream & stream, const Level & level);
 
 		public:
 
@@ -223,7 +229,7 @@ namespace solution
 
 			static inline const std::string initial_scale = "M1";
 
-			static inline const double price_deviation = 0.005;
+			static inline const double price_deviation = 0.0025;
 
 		private:
 
