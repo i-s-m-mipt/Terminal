@@ -62,6 +62,8 @@ namespace solution
 
 			try
 			{
+				std::filesystem::create_directory(directory);
+
 				load();
 			}
 			catch (const std::exception & exception)
@@ -96,6 +98,8 @@ namespace solution
 								reduce_levels(make_levels(points, Level_Resolution::week));
 							m_levels[asset][Level_Resolution::month] =
 								reduce_levels(make_levels(points, Level_Resolution::month));
+
+							save_levels(asset);
 						}
 					}
 				}
@@ -334,6 +338,43 @@ namespace solution
 			}
 		}
 
+		void Trader::save_levels(const std::string & asset) const
+		{
+			RUN_LOGGER(logger);
+
+			try
+			{
+				const std::filesystem::path file = asset + Extension::txt;
+				const std::filesystem::path path = directory / file;
+
+				std::fstream fout(path.string(), std::ios::out);
+
+				if (!fout)
+				{
+					throw trader_exception("cannot open file " + path.string());
+				}
+
+				for (const auto & level_resolution : m_levels.at(asset))
+				{
+					fout << "[" << asset << "] " <<
+						"resolution: " << level_resolution_to_string(level_resolution.first) << std::endl;
+
+					fout << std::endl;
+
+					for (const auto & level : level_resolution.second)
+					{
+						fout << level << std::endl;
+					}
+
+					fout << std::endl;
+				}
+			}
+			catch (const std::exception & exception)
+			{
+				shared::catch_handler < trader_exception > (logger, exception);
+			}
+		}
+
 		void Trader::print_levels(
 			const std::string & asset, Level_Resolution level_resolution) const
 		{
@@ -342,9 +383,9 @@ namespace solution
 			try
 			{
 				std::cout << "[" << asset << "] " << 
-					"resolution: " << level_resolution_to_string(level_resolution);
+					"resolution: " << level_resolution_to_string(level_resolution) << std::endl;
 
-				std::cout << std::endl << std::endl;
+				std::cout << std::endl;
 
 				for (const auto & level : m_levels.at(asset).at(level_resolution))
 				{
@@ -403,7 +444,7 @@ namespace solution
 				auto tm = *std::localtime(&time);
 
 				return (stream << 
-					"price: " /*<< std::setw(8) << std::setfill(' ') << std::right*/ << 
+					"price: " << std::setw(8) << std::setfill(' ') << std::right << 
 						std::setprecision(2) << std::fixed << level.price << " " <<
 					"since: " << std::put_time(&tm, "%y.%m.%d") << " "
 					"alive: " << std::setw(3) << std::setfill(' ') << std::right <<
@@ -426,7 +467,7 @@ namespace solution
 
 				if (getchar() == 'y')
 				{
-					// ...
+					run_implementation();
 				}
 			}
 			catch (const std::exception & exception)
@@ -455,12 +496,12 @@ namespace solution
 
 			try
 			{
-				while (!is_session_open())
-				{
-					std::this_thread::sleep_for(std::chrono::seconds(1));
-				}
+				//while (!is_session_open())
+				//{
+				//	std::this_thread::sleep_for(std::chrono::seconds(1));
+				//}
 
-				while(is_session_open())
+				while(/*is_session_open()*/true)
 				{
 					system("cls");
 
@@ -468,21 +509,21 @@ namespace solution
 					{
 						const auto price = m_market.get_current_price(asset.first);
 
-						for (const auto & resolution : asset.second)
+						std::cout << "[" << asset.first << "]     price: " << price << std::endl;
+
+						for (const auto & level_resolution : asset.second)
 						{
-							for (const auto & level : resolution.second)
+							for (const auto & level : level_resolution.second)
 							{
 								if (std::abs(level.price - price) / price <= price_deviation)
 								{
 									std::cout <<
 										"[" << asset.first << "] " <<
-										"(" << level_resolution_to_string(resolution.first) << ") " <<
+										"(" << level_resolution_to_string(level_resolution.first) << ") " <<
 										level << std::endl;
 								}
 							}
 						}
-
-						std::cout << std::endl;
 					}
 
 					std::this_thread::sleep_for(std::chrono::seconds(1));

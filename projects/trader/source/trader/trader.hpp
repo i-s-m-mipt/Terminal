@@ -16,6 +16,7 @@
 #include <exception>
 #include <execution>
 #include <filesystem>
+#include <fstream>
 #include <future>
 #include <iomanip>
 #include <iostream>
@@ -177,6 +178,19 @@ namespace solution
 				rule_t start;
 			};
 
+		private:
+
+			struct Extension
+			{
+				using extension_t = std::string;
+
+				static inline const extension_t txt = ".txt";
+				static inline const extension_t csv = ".csv";
+				static inline const extension_t dat = ".dat";
+
+				static inline const extension_t empty = "";
+			};
+
 		public:
 
 			Trader()
@@ -212,6 +226,8 @@ namespace solution
 
 			std::size_t level_resolution_to_frame(Level_Resolution level_resolution) const;
 
+			void save_levels(const std::string & asset) const;
+
 		public:
 
 			void print_levels(
@@ -236,6 +252,8 @@ namespace solution
 			bool is_session_open() const;
 
 		private:
+
+			static inline const std::filesystem::path directory = "trader/levels";
 
 			static inline const std::string initial_scale = "M60";
 
