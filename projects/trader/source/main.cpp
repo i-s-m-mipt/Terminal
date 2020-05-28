@@ -25,7 +25,6 @@ int main(int argc, char * argv[])
 
 		Trader trader;
 
-		trader.instance().print_levels("GAZP", Level_Resolution::day);
 		trader.instance().print_levels("GAZP", Level_Resolution::week);
 		trader.instance().print_levels("GAZP", Level_Resolution::month);
 

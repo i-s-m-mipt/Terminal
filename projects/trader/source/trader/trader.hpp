@@ -83,7 +83,6 @@ namespace solution
 
 			enum class Level_Resolution
 			{
-				day,
 				week,
 				month,
 			};
@@ -227,7 +226,7 @@ namespace solution
 
 		private:
 
-			static inline const std::string initial_scale = "M1";
+			static inline const std::string initial_scale = "M60";
 
 			static inline const double price_deviation = 0.0025;
 
