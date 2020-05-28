@@ -496,12 +496,12 @@ namespace solution
 
 			try
 			{
-				//while (!is_session_open())
-				//{
-				//	std::this_thread::sleep_for(std::chrono::seconds(1));
-				//}
+				while (!is_session_open())
+				{
+					std::this_thread::sleep_for(std::chrono::seconds(1));
+				}
 
-				while(/*is_session_open()*/true)
+				while(is_session_open()/*true*/)
 				{
 					system("cls");
 
