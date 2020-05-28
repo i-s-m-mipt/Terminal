@@ -67,7 +67,7 @@ namespace solution
 
 				using mutex_t = boost::interprocess::interprocess_mutex;
 
-				const std::string default_scale = "M60";
+				const std::string default_scale = "H1";
 
 				const auto shared_memory_name = "QUIK_" + asset + "_" + default_scale;
 
