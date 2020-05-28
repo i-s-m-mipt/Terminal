@@ -509,7 +509,13 @@ namespace solution
 					{
 						const auto price = m_market.get_current_price(asset.first);
 
-						std::cout << "[" << asset.first << "]     price: " << price << std::endl;
+						std::cout << "[" << asset.first << "]     price: " << 
+							std::setw(8) << std::setfill(' ') << std::right <<
+							std::setprecision(2) << std::fixed << price << std::endl;
+
+						std::cout << std::endl;
+
+						bool has_levels = false;
 
 						for (const auto & level_resolution : asset.second)
 						{
@@ -517,12 +523,19 @@ namespace solution
 							{
 								if (std::abs(level.price - price) / price <= price_deviation)
 								{
+									has_levels = true;
+
 									std::cout <<
 										"[" << asset.first << "] " <<
 										"(" << level_resolution_to_string(level_resolution.first) << ") " <<
 										level << std::endl;
 								}
 							}
+						}
+
+						if (has_levels)
+						{
+							std::cout << std::endl;
 						}
 					}
 
