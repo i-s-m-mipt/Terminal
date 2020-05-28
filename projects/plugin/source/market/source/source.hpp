@@ -106,6 +106,7 @@ namespace solution
 
 			private:
 
+				using price_t = Candle::price_t;
 				using index_t = Candle::index_t;
 
 			public:
@@ -192,6 +193,7 @@ namespace solution
 				shared_memory_t m_shared_memory;
 
 				deque_t * m_deque;
+				price_t * m_price;
 				mutex_t * m_mutex;
 
 			private:

@@ -29,6 +29,7 @@ namespace solution
 					record_allocator_t allocator(m_shared_memory.get_segment_manager());
 
 					m_deque = m_shared_memory.construct < deque_t > (boost::interprocess::unique_instance) (allocator);
+					m_price = m_shared_memory.construct < price_t > (boost::interprocess::unique_instance) ();
 					m_mutex = m_shared_memory.construct < mutex_t > (boost::interprocess::unique_instance) ();
 				}
 				catch (const std::exception & exception)
@@ -77,6 +78,12 @@ namespace solution
 				try
 				{
 					const auto size = m_source->Size();
+
+					{
+						boost::interprocess::scoped_lock < mutex_t > lock(*m_mutex);
+
+						*m_price = make_candle(size).price_close;
+					}
 
 					if (size >= m_size)
 					{

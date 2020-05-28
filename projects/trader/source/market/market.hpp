@@ -20,14 +20,14 @@
 
 #define BOOST_PYTHON_STATIC_LIB
 
-//#include <boost/interprocess/allocators/allocator.hpp>
-//#include <boost/interprocess/containers/deque.hpp>
-//#include <boost/interprocess/containers/string.hpp>
-//#include <boost/interprocess/managed_shared_memory.hpp>
-//#include <boost/interprocess/sync/interprocess_mutex.hpp>
-//#include <boost/interprocess/sync/named_mutex.hpp>
-//#include <boost/interprocess/sync/scoped_lock.hpp>
-//#include <boost/interprocess/managed_windows_shared_memory.hpp>
+#include <boost/interprocess/allocators/allocator.hpp>
+#include <boost/interprocess/containers/deque.hpp>
+#include <boost/interprocess/containers/string.hpp>
+#include <boost/interprocess/managed_shared_memory.hpp>
+#include <boost/interprocess/sync/interprocess_mutex.hpp>
+#include <boost/interprocess/sync/named_mutex.hpp>
+#include <boost/interprocess/sync/scoped_lock.hpp>
+#include <boost/interprocess/managed_windows_shared_memory.hpp>
 #include <boost/python.hpp>
 
 #include "../../../shared/source/logger/logger.hpp"
@@ -97,8 +97,7 @@ namespace solution
 			std::filesystem::path get(
 				const std::string & asset, const std::string & scale, time_point_t first, time_point_t last) const;
 			
-			// std::filesystem::path get(
-			//	const std::string & asset, const std::string & scale, std::size_t quantity) const;
+			double get_current_price(const std::string & asset) const;
 			
 		private:
 
