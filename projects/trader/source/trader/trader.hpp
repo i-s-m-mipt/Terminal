@@ -8,6 +8,7 @@
 #endif // #ifdef BOOST_HAS_PRAGMA_ONCE
 
 #include <algorithm>
+#include <atomic>
 #include <chrono>
 #include <cmath>
 #include <ctime>
@@ -15,6 +16,7 @@
 #include <exception>
 #include <execution>
 #include <filesystem>
+#include <future>
 #include <iomanip>
 #include <iostream>
 #include <iterator>
@@ -24,6 +26,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <thread>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -207,12 +210,14 @@ namespace solution
 
 			time_point_t parse(const Candle::date_t & date, const Candle::time_t & time) const;
 
-			std::size_t resolution_to_frame(Level_Resolution level_resolution) const;
+			std::size_t level_resolution_to_frame(Level_Resolution level_resolution) const;
 
 		public:
 
 			void print_levels(
 				const std::string & asset, Level_Resolution level_resolution) const;
+
+			std::string level_resolution_to_string(Level_Resolution level_resolution) const;
 
 		private:
 
@@ -223,6 +228,12 @@ namespace solution
 			virtual void run() override;
 
 			virtual void stop() override;
+
+		private:
+
+			void run_implementation() const;
+
+			bool is_session_open() const;
 
 		private:
 

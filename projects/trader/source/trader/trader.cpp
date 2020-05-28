@@ -175,7 +175,7 @@ namespace solution
 
 			try
 			{
-				auto frame = resolution_to_frame(level_resolution);
+				auto frame = level_resolution_to_frame(level_resolution);
 
 				std::vector < Level > levels;
 
@@ -311,7 +311,7 @@ namespace solution
 			}
 		}
 
-		std::size_t Trader::resolution_to_frame(Level_Resolution level_resolution) const
+		std::size_t Trader::level_resolution_to_frame(Level_Resolution level_resolution) const
 		{
 			RUN_LOGGER(logger);
 
@@ -341,20 +341,8 @@ namespace solution
 
 			try
 			{
-				std::cout << "[" << asset << "] " << "resolution: ";
-
-				switch (level_resolution)
-				{
-				case Level_Resolution::week:
-					std::cout << "W";
-					break;
-				case Level_Resolution::month:
-					std::cout << "M";
-					break;
-				default:
-					throw trader_exception("unknown level resolution");
-					break;
-				}
+				std::cout << "[" << asset << "] " << 
+					"resolution: " << level_resolution_to_string(level_resolution);
 
 				std::cout << std::endl << std::endl;
 
@@ -364,6 +352,31 @@ namespace solution
 				}
 
 				std::cout << std::endl;
+			}
+			catch (const std::exception & exception)
+			{
+				shared::catch_handler < trader_exception > (logger, exception);
+			}
+		}
+
+		std::string Trader::level_resolution_to_string(Level_Resolution level_resolution) const
+		{
+			RUN_LOGGER(logger);
+
+			try
+			{
+				switch (level_resolution)
+				{
+				case Level_Resolution::week:
+					return "W";
+					break;
+				case Level_Resolution::month:
+					return "M";
+					break;
+				default:
+					throw trader_exception("unknown level resolution");
+					break;
+				}
 			}
 			catch (const std::exception & exception)
 			{
@@ -429,6 +442,70 @@ namespace solution
 			try
 			{
 				// ...
+			}
+			catch (const std::exception & exception)
+			{
+				shared::catch_handler < trader_exception > (logger, exception);
+			}
+		}
+
+		void Trader::run_implementation() const
+		{
+			RUN_LOGGER(logger);
+
+			try
+			{
+				while (!is_session_open())
+				{
+					std::this_thread::sleep_for(std::chrono::seconds(1));
+				}
+
+				while(is_session_open())
+				{
+					system("cls");
+
+					for (const auto & asset : m_levels)
+					{
+						const auto price = m_market.get_current_price(asset.first);
+
+						for (const auto & resolution : asset.second)
+						{
+							for (const auto & level : resolution.second)
+							{
+								if (std::abs(level.price - price) / price <= price_deviation)
+								{
+									std::cout <<
+										"[" << asset.first << "] " <<
+										"(" << level_resolution_to_string(resolution.first) << ") " <<
+										level << std::endl;
+								}
+							}
+						}
+
+						std::cout << std::endl;
+					}
+
+					std::this_thread::sleep_for(std::chrono::seconds(1));
+				} 
+			}
+			catch (const std::exception & exception)
+			{
+				shared::catch_handler < trader_exception > (logger, exception);
+			}
+		}
+
+		bool Trader::is_session_open() const
+		{
+			RUN_LOGGER(logger);
+
+			try
+			{
+				std::time_t time = std::time(nullptr);
+
+				std::tm tm = *std::localtime(&time);
+
+				return ((tm.tm_hour >= 10) && 
+					((tm.tm_hour < 18) || (tm.tm_hour == 18 && tm.tm_min < 40)));
 			}
 			catch (const std::exception & exception)
 			{
