@@ -503,17 +503,17 @@ namespace solution
 
 				while(is_session_open()/*true*/)
 				{
-					system("cls");
+					std::ostringstream sout;
 
 					for (const auto & asset : m_levels)
 					{
 						const auto price = m_market.get_current_price(asset.first);
 
-						std::cout << "[" << asset.first << "]     price: " << 
+						sout << "[" << asset.first << "]     price: " <<
 							std::setw(8) << std::setfill(' ') << std::right <<
 							std::setprecision(2) << std::fixed << price << std::endl;
 
-						std::cout << std::endl;
+						sout << std::endl;
 
 						bool has_levels = false;
 
@@ -525,7 +525,7 @@ namespace solution
 								{
 									has_levels = true;
 
-									std::cout <<
+									sout <<
 										"[" << asset.first << "] " <<
 										"(" << level_resolution_to_string(level_resolution.first) << ") " <<
 										level << std::endl;
@@ -535,9 +535,13 @@ namespace solution
 
 						if (has_levels)
 						{
-							std::cout << std::endl;
+							sout << std::endl;
 						}
 					}
+
+					system("cls");
+
+					std::cout << sout.str() << std::endl;
 
 					std::this_thread::sleep_for(std::chrono::seconds(1));
 				} 
