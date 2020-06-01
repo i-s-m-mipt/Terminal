@@ -146,7 +146,7 @@ namespace solution
 			{
 				if (levels.size() > 1)
 				{
-					for (auto first = levels.begin(); first != std::prev(levels.end()); ++first)
+					for (auto first = levels.begin(); first != levels.end(); ++first)
 					{
 						for (auto current = std::next(first); current != levels.end();)
 						{
