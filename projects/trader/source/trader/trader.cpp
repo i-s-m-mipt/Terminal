@@ -94,6 +94,8 @@ namespace solution
 						{
 							auto points = make_points(m_market.get(asset, scale, first, last));
 
+							m_levels[asset][Level_Resolution::day] =
+								reduce_levels(make_levels(points, Level_Resolution::day));
 							m_levels[asset][Level_Resolution::week] =
 								reduce_levels(make_levels(points, Level_Resolution::week));
 							m_levels[asset][Level_Resolution::month] =
@@ -183,7 +185,24 @@ namespace solution
 
 				std::vector < Level > levels;
 
-				for (auto first = points.begin(); first != points.end(); )
+				auto first = points.begin();
+
+				switch (level_resolution)
+				{
+				case Level_Resolution::day:
+					first = std::prev(points.end(), 9U * 5U * 4U);
+					break;
+				case Level_Resolution::week:
+					first = std::prev(points.end(), 9U * 5U * 4U * 3U);
+					break;
+				case Level_Resolution::month:
+					break;
+				default:
+					throw trader_exception("unknown level resolution");
+					break;
+				}
+
+				for (; first != points.end(); )
 				{
 					auto last = std::next(first, std::min(frame, 
 						static_cast < decltype(frame) > (std::distance(first, points.end()))));
@@ -323,6 +342,8 @@ namespace solution
 			{
 				switch (level_resolution)
 				{
+				case Level_Resolution::day:
+					return 9U;
 				case Level_Resolution::week:
 					return 9U * 5U;
 				case Level_Resolution::month:
@@ -408,6 +429,9 @@ namespace solution
 			{
 				switch (level_resolution)
 				{
+				case Level_Resolution::day:
+					return "D";
+					break;
 				case Level_Resolution::week:
 					return "W";
 					break;
