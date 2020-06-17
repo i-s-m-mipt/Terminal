@@ -467,13 +467,20 @@ namespace solution
 
 				auto tm = *std::localtime(&time);
 
-				return (stream << 
+				stream << 
 					"price: " << std::setw(8) << std::setfill(' ') << std::right << 
 						std::setprecision(2) << std::fixed << level.price << " " <<
 					"since: " << std::put_time(&tm, "%y.%m.%d") << " "
 					"alive: " << std::setw(3) << std::setfill(' ') << std::right <<
 						duration_since_time_point < days, Trader::clock_t > (level.time).count() << " " <<
-					"power: " << level.strength);
+					"power: " << level.strength;
+
+				if (level.strength >= 2)
+				{
+					stream << "(strong)\a";
+				}
+
+				return stream;
 			}
 			catch (const std::exception & exception)
 			{
