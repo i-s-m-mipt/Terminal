@@ -477,7 +477,7 @@ namespace solution
 
 				if (level.strength >= 2)
 				{
-					stream << "(strong)\a";
+					stream << " (strong)";
 				}
 
 				return stream;
@@ -534,6 +534,10 @@ namespace solution
 					std::this_thread::sleep_for(std::chrono::seconds(1));
 				}
 
+				auto last_signal = clock_t::now();
+
+				bool has_strong_levels = false;
+
 				while(is_session_open()/*true*/)
 				{
 					std::ostringstream sout;
@@ -564,6 +568,11 @@ namespace solution
 										"[" << asset.first << "] " <<
 										"(" << level_resolution_to_string(level_resolution.first) << ") " <<
 										level << std::endl;
+
+									if (level.strength >= 2)
+									{
+										has_strong_levels = true;
+									}
 								}
 							}
 						}
@@ -577,6 +586,15 @@ namespace solution
 					system("cls");
 
 					std::cout << sout.str() << std::endl;
+
+					if (has_strong_levels && clock_t::now() - last_signal > std::chrono::seconds(60))
+					{
+						std::cout << '\a';
+
+						last_signal = clock_t::now();
+
+						has_strong_levels = false;
+					}
 
 					std::this_thread::sleep_for(std::chrono::seconds(1));
 				} 
