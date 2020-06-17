@@ -87,6 +87,7 @@ namespace solution
 
 			enum class Level_Resolution
 			{
+				day,
 				week,
 				month,
 			};

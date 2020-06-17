@@ -496,6 +496,8 @@ namespace solution
 
 			try
 			{
+				using days = std::chrono::duration < int, std::ratio < 60 * 60 * 24 > >;
+
 				while (!is_session_open())
 				{
 					std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -521,7 +523,9 @@ namespace solution
 						{
 							for (const auto & level : level_resolution.second)
 							{
-								if (std::abs(level.price - price) / price <= price_deviation)
+								if ((std::abs(level.price - price) / price <= price_deviation) &&
+									(level_resolution.first == Level_Resolution::day || 
+										duration_since_time_point < days, clock_t > (level.time).count() != 0))
 								{
 									has_levels = true;
 
