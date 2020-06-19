@@ -542,32 +542,37 @@ namespace solution
 				{
 					std::ostringstream sout;
 
+					sout << "===================================================================\n\n";
+
 					for (const auto & asset : m_levels)
 					{
+						std::set < std::string, std::greater < std::string > > lines;
+
+						std::ostringstream formatter;
+
 						const auto price = m_market.get_current_price(asset.first);
 
-						sout << "[" << asset.first << "]     price: " <<
+						formatter << "[" << asset.first << "] price: " <<
 							std::setw(8) << std::setfill(' ') << std::right <<
-							std::setprecision(2) << std::fixed << price << std::endl;
+							std::setprecision(2) << std::fixed << price << '\n';
 
-						sout << std::endl;
+						lines.insert(formatter.str());
 
-						bool has_levels = false;
+						formatter.str("");
 
 						for (const auto & level_resolution : asset.second)
 						{
 							for (const auto & level : level_resolution.second)
 							{
-								if ((std::abs(level.price - price) / price <= price_deviation) &&
+								if ((std::abs(level.price - price) / price <= 2.0 * price_deviation) &&
 									(level_resolution.first == Level_Resolution::day || 
 										duration_since_time_point < days, clock_t > (level.time).count() != 0))
 								{
-									has_levels = true;
+									formatter << "[" << asset.first << "] " << level << '\n';
 
-									sout <<
-										"[" << asset.first << "] " <<
-										"(" << level_resolution_to_string(level_resolution.first) << ") " <<
-										level << std::endl;
+									lines.insert(formatter.str());
+
+									formatter.str("");
 
 									if (level.strength >= 2)
 									{
@@ -577,10 +582,12 @@ namespace solution
 							}
 						}
 
-						if (has_levels)
+						for (const auto & line : lines)
 						{
-							sout << std::endl;
+							sout << line;
 						}
+
+						sout << "\n===================================================================\n\n";
 					}
 
 					system("cls");

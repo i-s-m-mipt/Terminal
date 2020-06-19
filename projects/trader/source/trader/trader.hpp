@@ -24,6 +24,7 @@
 #include <locale>
 #include <map>
 #include <ostream>
+#include <set>
 #include <sstream>
 #include <stdexcept>
 #include <string>
