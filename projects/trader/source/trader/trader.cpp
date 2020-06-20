@@ -94,8 +94,8 @@ namespace solution
 						{
 							auto points = make_points(m_market.get(asset, scale, first, last));
 
-							m_levels[asset][Level_Resolution::day] =
-								reduce_levels(make_levels(points, Level_Resolution::day));
+							/* m_levels[asset][Level_Resolution::day] =
+								reduce_levels(make_levels(points, Level_Resolution::day)); */
 							m_levels[asset][Level_Resolution::week] =
 								reduce_levels(make_levels(points, Level_Resolution::week));
 							m_levels[asset][Level_Resolution::month] =
@@ -475,11 +475,6 @@ namespace solution
 						duration_since_time_point < days, Trader::clock_t > (level.time).count() << " " <<
 					"power: " << level.strength;
 
-				if (level.strength >= 2)
-				{
-					stream << " (strong)";
-				}
-
 				return stream;
 			}
 			catch (const std::exception & exception)
@@ -527,84 +522,132 @@ namespace solution
 
 			try
 			{
-				using days = std::chrono::duration < int, std::ratio < 60 * 60 * 24 > >;
-
 				while (!is_session_open())
 				{
 					std::this_thread::sleep_for(std::chrono::seconds(1));
 				}
 
+				const auto w = 987U;
+				const auto h = 330U;
+
+				sf::VideoMode mode(w, h);
+
+				sf::RenderWindow window(mode, "TRADER", sf::Style::Close | sf::Style::Titlebar);
+
+				window.setFramerateLimit(60);
+
+				sf::Font font;
+
+				if (!font.loadFromFile("window/fonts/consolas.ttf"))
+				{
+					throw trader_exception("cannot load font");
+				}
+
+				sfe::Stream stream_levels; 
+				sfe::Stream stream_states;
+
+				stream_levels.setFont(font);
+				stream_states.setFont(font);
+
+				const auto character_size = 16U;
+
+				stream_levels.setCharacterSize(character_size);
+				stream_states.setCharacterSize(character_size);
+
+				const auto stream_levels_width = character_size * 33;
+				const auto indent = character_size / 8;
+
+				stream_levels.setPosition(indent,                           0);
+				stream_states.setPosition(indent * 2 + stream_levels_width, 0);
+
+				sf::Vertex separator[] =
+				{
+					sf::Vertex(sf::Vector2f(indent + stream_levels_width, 0 + 2 * indent)),
+					sf::Vertex(sf::Vector2f(indent + stream_levels_width, h - 2 * indent))
+				};
+
+				separator[0].color = sf::Color(211U, 211U, 211U);
+				separator[1].color = sf::Color(211U, 211U, 211U);
+
 				auto last_signal = clock_t::now();
 
-				bool has_strong_levels = false;
+				bool has_levels = false;
 
-				while(is_session_open()/*true*/)
+				while (window.isOpen())
 				{
-					std::ostringstream sout;
+					sf::Event event;
 
-					sout << "===================================================================\n\n";
+					while (window.pollEvent(event))
+					{
+						if (event.type == sf::Event::Closed || !is_session_open())
+						{
+							window.close();
+						}
+					}
+
+					stream_levels.clear();
+					stream_states.clear();
 
 					for (const auto & asset : m_levels)
 					{
-						std::set < std::string, std::greater < std::string > > lines;
-
-						std::ostringstream formatter;
-
 						const auto price = m_market.get_current_price(asset.first);
 
-						formatter << "[" << asset.first << "] price: " <<
-							std::setw(8) << std::setfill(' ') << std::right <<
-							std::setprecision(2) << std::fixed << price << '\n';
+						std::ostringstream sout_level;
+						std::ostringstream sout_state;
 
-						lines.insert(formatter.str());
+						sout_state << std::setprecision(2) << std::fixed << "[" << asset.first << "]" << 
+							" price: " << std::setw(8) << std::setfill(' ') << std::right << 
+								price <<
+							" delta: " << std::setw(6) << std::setfill(' ') << std::right <<
+								price / 100.0 * 1.0 * 0.25 <<
+							" limit: " << std::setw(6) << std::setfill(' ') << std::right <<
+								price / 100.0 * 1.0 << '\n';
 
-						formatter.str("");
+						stream_states << sout_state.str();
+
+						std::set < std::string, std::greater < std::string > > active_levels;
 
 						for (const auto & level_resolution : asset.second)
 						{
 							for (const auto & level : level_resolution.second)
 							{
-								if ((std::abs(level.price - price) / price <= 2.0 * price_deviation) &&
-									(level_resolution.first == Level_Resolution::day || 
-										duration_since_time_point < days, clock_t > (level.time).count() != 0))
+								if (std::abs(level.price - price) / price <= 2.0 * price_deviation)
 								{
-									formatter << "[" << asset.first << "] " << level << '\n';
+									sout_level << "[" << asset.first << "] " << level << '\n';
 
-									lines.insert(formatter.str());
+									active_levels.insert(sout_level.str());
 
-									formatter.str("");
+									sout_level.str("");
 
-									if (level.strength >= 2)
-									{
-										has_strong_levels = true;
-									}
+									has_levels = true;
 								}
 							}
 						}
 
-						for (const auto & line : lines)
+						for (const auto & active_level : active_levels)
 						{
-							sout << line;
+							stream_levels << active_level;
 						}
-
-						sout << "\n===================================================================\n\n";
 					}
 
-					system("cls");
-
-					std::cout << sout.str() << std::endl;
-
-					if (has_strong_levels && clock_t::now() - last_signal > std::chrono::seconds(60))
+					if (has_levels && clock_t::now() - last_signal > std::chrono::seconds(60))
 					{
 						std::cout << '\a';
 
 						last_signal = clock_t::now();
 
-						has_strong_levels = false;
+						has_levels = false;
 					}
 
-					std::this_thread::sleep_for(std::chrono::seconds(1));
-				} 
+					window.clear();
+
+					window.draw(stream_levels);
+					window.draw(stream_states);
+
+					window.draw(separator, 2, sf::Lines);
+
+					window.display();
+				}
 			}
 			catch (const std::exception & exception)
 			{

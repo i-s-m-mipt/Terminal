@@ -42,6 +42,12 @@
 #include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/include/phoenix_object.hpp>
 
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
+
+#include "stream/stream.hpp"
+
 #include "../market/market.hpp"
 
 #include "../../../shared/source/logger/logger.hpp"
@@ -104,7 +110,7 @@ namespace solution
 
 		private:
 
-			using levels_container_t = std::unordered_map < std::string, 
+			using levels_container_t = std::map < std::string, 
 				std::unordered_map < Level_Resolution, std::vector < Level > > > ;
 
 		private:
