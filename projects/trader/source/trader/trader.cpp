@@ -86,24 +86,43 @@ namespace solution
 				auto first = Market::clock_t::now() - years(1);
 				auto last  = Market::clock_t::now();
 
+				std::vector < std::future < void > > futures;
+
+				futures.reserve(m_assets.size());
+
 				for (const auto & asset : m_assets)
 				{
 					for (const auto & scale : m_scales)
 					{
 						if (scale == initial_scale)
 						{
-							auto points = make_points(m_market.get(asset, scale, first, last));
+							std::packaged_task < void() > task([this, asset, scale, first, last]() 
+							{
+								auto points = make_points(m_market.get(asset, scale, first, last));
 
-							/*m_levels[asset][Level_Resolution::day] =
-								reduce_levels(make_levels(points, Level_Resolution::day));*/
-							m_levels[asset][Level_Resolution::week] =
-								reduce_levels(make_levels(points, Level_Resolution::week));
-							m_levels[asset][Level_Resolution::month] =
-								reduce_levels(make_levels(points, Level_Resolution::month));
+								auto week_levels = 
+									reduce_levels(make_levels(points, Level_Resolution::week));
+								auto month_levels = 
+									reduce_levels(make_levels(points, Level_Resolution::month));
 
-							save_levels(asset);
+								{
+									std::scoped_lock lock(m_levels_mutex);
+
+									m_levels[asset][Level_Resolution::week ] = std::move(week_levels);
+									m_levels[asset][Level_Resolution::month] = std::move(month_levels);
+								}
+
+								save_levels(asset);
+							});
+
+							futures.push_back(boost::asio::post(m_thread_pool, std::move(task)));
 						}
 					}
+				}
+
+				for (auto & future : futures)
+				{
+					future.wait();
 				}
 			}
 			catch (const std::exception & exception)
@@ -189,9 +208,9 @@ namespace solution
 
 				switch (level_resolution)
 				{
-				/*case Level_Resolution::day:
+				case Level_Resolution::day:
 					first = std::prev(points.end(), 9U * 5U * 4U);
-					break;*/
+					break;
 				case Level_Resolution::week:
 					first = std::prev(points.end(), 9U * 5U * 4U * 3U);
 					break;
@@ -344,8 +363,8 @@ namespace solution
 			{
 				switch (level_resolution)
 				{
-				/*case Level_Resolution::day:
-					return 9U;*/
+				case Level_Resolution::day:
+					return 9U;
 				case Level_Resolution::week:
 					return 9U * 5U;
 				case Level_Resolution::month:
@@ -377,19 +396,23 @@ namespace solution
 					throw trader_exception("cannot open file " + path.string());
 				}
 
-				for (const auto & level_resolution : m_levels.at(asset))
 				{
-					fout << "[" << asset << "] " <<
-						"resolution: " << level_resolution_to_string(level_resolution.first) << std::endl;
+					Scoped_Shared_Lock lock(m_levels_mutex);
 
-					fout << std::endl;
-
-					for (const auto & level : level_resolution.second)
+					for (const auto & level_resolution : m_levels.at(asset))
 					{
-						fout << level << std::endl;
-					}
+						fout << "[" << asset << "] " <<
+							"resolution: " << level_resolution_to_string(level_resolution.first) << std::endl;
 
-					fout << std::endl;
+						fout << std::endl;
+
+						for (const auto & level : level_resolution.second)
+						{
+							fout << level << std::endl;
+						}
+
+						fout << std::endl;
+					}
 				}
 			}
 			catch (const std::exception & exception)

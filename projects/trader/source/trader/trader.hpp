@@ -23,8 +23,10 @@
 #include <iterator>
 #include <locale>
 #include <map>
+#include <mutex>
 #include <ostream>
 #include <set>
+#include <shared_mutex>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -33,6 +35,7 @@
 #include <utility>
 #include <vector>
 
+#include <boost/asio.hpp>
 #include <boost/config/warning_disable.hpp>
 #include <boost/extended/application/service.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
@@ -199,9 +202,41 @@ namespace solution
 				static inline const extension_t empty = "";
 			};
 
+		private:
+
+			class Scoped_Shared_Lock
+			{
+			public:
+
+				using mutex_t = std::shared_mutex;
+
+			public:
+
+				explicit Scoped_Shared_Lock(mutex_t & mutex)
+					: m_mutex(mutex)
+				{
+					m_mutex.lock_shared();
+				}
+
+				~Scoped_Shared_Lock() noexcept
+				{
+					m_mutex.unlock_shared();
+				}
+
+			private:
+
+				Scoped_Shared_Lock			  (const Scoped_Shared_Lock &) = delete;
+				Scoped_Shared_Lock & operator=(const Scoped_Shared_Lock &) = delete;
+
+			private:
+
+				mutex_t & m_mutex;
+			};
+
 		public:
 
-			Trader()
+			Trader() :
+				m_thread_pool(std::thread::hardware_concurrency())
 			{
 				initialize();
 			}
@@ -275,6 +310,12 @@ namespace solution
 			Market m_market;
 
 			levels_container_t m_levels;
+
+			boost::asio::thread_pool m_thread_pool;
+
+		private:
+
+			mutable std::shared_mutex m_levels_mutex;
 		};
 
 	} // namespace trader
