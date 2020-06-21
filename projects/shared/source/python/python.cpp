@@ -10,14 +10,19 @@ namespace solution
 
 			try
 			{
-				if (!Py_IsInitialized())
+				std::call_once(is_initialized_once, []() 
 				{
-					Py_SetPythonHome(directory);
+					if (!Py_IsInitialized())
+					{
+						Py_SetPythonHome(directory);
 
-					Py_Initialize();
-				}
+						Py_Initialize();
+					}
+				});
 
-				m_state = PyGILState_Ensure();
+				mutex.lock();
+
+				state = PyGILState_Ensure();
 
 				m_global = boost::python::import("__main__").attr("__dict__");
 			}
@@ -33,7 +38,9 @@ namespace solution
 
 			try
 			{
-				PyGILState_Release(m_state);
+				PyGILState_Release(state);
+
+				mutex.unlock();
 			}
 			catch (const std::exception & exception)
 			{
@@ -60,6 +67,11 @@ namespace solution
 
 			return message;
 		}
+
+		std::once_flag Python::is_initialized_once;
+
+		std::mutex		 Python::mutex;
+		PyGILState_STATE Python::state;
 
 	} // namespace shared
 

@@ -8,6 +8,7 @@
 #endif // #ifdef BOOST_HAS_PRAGMA_ONCE
 
 #include <exception>
+#include <mutex>
 #include <stdexcept>
 #include <string>
 
@@ -80,11 +81,14 @@ namespace solution
 
 		private:
 
-			boost::python::api::object m_global;
+			static std::once_flag is_initialized_once;
+
+			static std::mutex       mutex;
+			static PyGILState_STATE state;
 
 		private:
 
-			mutable PyGILState_STATE m_state;
+			boost::python::api::object m_global;
 		};
 
 	} // namespace shared
