@@ -35,8 +35,14 @@ namespace solution
 					boost::python::exec("from market import get", 
 						python.global(), python.global());
 
+					static auto last_execution = clock_t::now();
+
+					std::this_thread::sleep_until(last_execution + std::chrono::milliseconds(1000));
+
 					python.global()["get"]
 						(asset.c_str(), scale.c_str(), make_date(first).c_str(), make_date(last).c_str(), path.string().c_str());
+				
+					last_execution = clock_t::now();
 				}
 				catch (const boost::python::error_already_set &)
 				{
