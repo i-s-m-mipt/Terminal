@@ -636,7 +636,7 @@ namespace solution
 						{
 							for (const auto & level : level_resolution.second)
 							{
-								if (std::abs(level.price - price) / price <= 2.0 * price_deviation)
+								if (std::abs(level.price - price) / price <= price_deviation)
 								{
 									sout_level << "[" << asset.first << "] " << level << '\n';
 
