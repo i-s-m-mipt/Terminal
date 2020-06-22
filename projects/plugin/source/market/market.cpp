@@ -229,7 +229,7 @@ namespace solution
 								":" + source->scale_code() + "source update failed");
 						}
 					}
-
+					/*
 					for (const auto & quotes : m_quotess)
 					{
 						try
@@ -242,6 +242,7 @@ namespace solution
 								" quotes update failed");
 						}
 					}
+					*/
 				}
 			}
 			catch (const std::exception & exception)

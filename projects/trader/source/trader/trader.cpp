@@ -559,7 +559,7 @@ namespace solution
 
 				sf::RenderWindow window(mode, "TRADER", sf::Style::Close | sf::Style::Titlebar);
 
-				window.setFramerateLimit(60);
+				window.setFramerateLimit(30);
 
 				sf::Font font;
 
