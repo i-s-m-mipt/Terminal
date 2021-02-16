@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\shared\source\logger\logger.cpp" />
+    <ClCompile Include="..\..\shared\source\memory\view\view_base.cpp" />
+    <ClCompile Include="..\..\shared\source\object\object.cpp" />
+    <ClCompile Include="..\..\shared\source\python\python.cpp" />
+    <ClCompile Include="..\source\action\action.cpp" />
+    <ClCompile Include="..\source\main.cpp" />
+    <ClCompile Include="..\source\memory\memory.cpp" />
+    <ClCompile Include="..\source\memory\node\node.cpp" />
+    <ClCompile Include="..\source\memory\view\view.cpp" />
+    <ClCompile Include="..\source\system\system.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\shared\source\config\config.hpp" />
+    <ClInclude Include="..\..\shared\source\logger\logger.hpp" />
+    <ClInclude Include="..\..\shared\source\memory\view\view_base.hpp" />
+    <ClInclude Include="..\..\shared\source\object\object.hpp" />
+    <ClInclude Include="..\..\shared\source\python\python.hpp" />
+    <ClInclude Include="..\source\action\action.hpp" />
+    <ClInclude Include="..\source\memory\memory.hpp" />
+    <ClInclude Include="..\source\memory\node\node.hpp" />
+    <ClInclude Include="..\source\memory\view\view.hpp" />
+    <ClInclude Include="..\source\system\system.hpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{23F6F308-FE5C-451C-9780-9F5F52A65315}</ProjectGuid>
+    <RootNamespace>system</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <ProjectName>system</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(ProjectDir)..\output\debug\</OutDir>
+    <IntDir>$(ProjectDir)..\service\debug\</IntDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)\libraries\boost;</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(SolutionDir)\libraries\boost\libs;</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(ProjectDir)..\output\release\</OutDir>
+    <IntDir>$(ProjectDir)..\service\release\</IntDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)\libraries\boost;</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(SolutionDir)\libraries\boost\libs;</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(ProjectDir)..\output\release\</OutDir>
+    <IntDir>$(ProjectDir)..\service\release\</IntDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)\libraries\boost;</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(SolutionDir)\libraries\boost\libs;</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libraries\boost;$(SolutionDir)\libraries\python\include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0601;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;WIN32;_DEBUG;_CONSOLE;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeaderFile />
+      <DisableSpecificWarnings>4101;4715</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libraries\boost\stage\lib;$(SolutionDir)\libraries\python\libs;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>boost_system-vc141-mt-gd-x32-1_70.lib;boost_log-vc141-mt-gd-x32-1_70.lib;python37_d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <ShowProgress>NotSet</ShowProgress>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libraries\boost;$(SolutionDir)\libraries\python\include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0601;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;WIN32;NDEBUG;_CONSOLE;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeaderFile />
+      <DisableSpecificWarnings>4101;4715</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libraries\boost\stage\lib;$(SolutionDir)\libraries\python\libs;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-network-s.lib;sfml-audio-s.lib;sfml-graphics-s.lib;sfml-system-s.lib;sfml-window-s.lib;opengl32.lib;freetype.lib;winmm.lib;gdi32.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;ws2_32.lib;python36.lib;libboost_atomic-vc141-mt-x32-1_70.lib;libboost_chrono-vc141-mt-x32-1_70.lib;libboost_container-vc141-mt-x32-1_70.lib;libboost_context-vc141-mt-x32-1_70.lib;libboost_contract-vc141-mt-x32-1_70.lib;libboost_coroutine-vc141-mt-x32-1_70.lib;libboost_date_time-vc141-mt-x32-1_70.lib;libboost_exception-vc141-mt-x32-1_70.lib;libboost_fiber-vc141-mt-x32-1_70.lib;libboost_filesystem-vc141-mt-x32-1_70.lib;libboost_graph-vc141-mt-x32-1_70.lib;libboost_iostreams-vc141-mt-x32-1_70.lib;libboost_locale-vc141-mt-x32-1_70.lib;libboost_log_setup-vc141-mt-x32-1_70.lib;libboost_log-vc141-mt-x32-1_70.lib;libboost_math_c99f-vc141-mt-x32-1_70.lib;libboost_math_c99l-vc141-mt-x32-1_70.lib;libboost_math_c99-vc141-mt-x32-1_70.lib;libboost_math_tr1f-vc141-mt-x32-1_70.lib;libboost_math_tr1l-vc141-mt-x32-1_70.lib;libboost_math_tr1-vc141-mt-x32-1_70.lib;libboost_prg_exec_monitor-vc141-mt-x32-1_70.lib;libboost_program_options-vc141-mt-x32-1_70.lib;libboost_python36-vc141-mt-x32-1_70.lib;libboost_random-vc141-mt-x32-1_70.lib;libboost_regex-vc141-mt-x32-1_70.lib;libboost_serialization-vc141-mt-x32-1_70.lib;libboost_stacktrace_noop-vc141-mt-x32-1_70.lib;libboost_stacktrace_windbg_cached-vc141-mt-x32-1_70.lib;libboost_stacktrace_windbg-vc141-mt-x32-1_70.lib;libboost_system-vc141-mt-x32-1_70.lib;libboost_test_exec_monitor-vc141-mt-x32-1_70.lib;libboost_thread-vc141-mt-x32-1_70.lib;libboost_timer-vc141-mt-x32-1_70.lib;libboost_type_erasure-vc141-mt-x32-1_70.lib;libboost_unit_test_framework-vc141-mt-x32-1_70.lib;libboost_wave-vc141-mt-x32-1_70.lib;libboost_wserialization-vc141-mt-x32-1_70.lib;kernel32.lib;user32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <ShowProgress>NotSet</ShowProgress>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libraries\boost;$(SolutionDir)\libraries\python\include;$(SolutionDir)\libraries\sfml\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HAVE_SNPRINTF;_WIN32_WINNT=0x0601;_CRT_SECURE_NO_WARNINGS;SFML_STATIC;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE; _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS; NDEBUG;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeaderFile />
+      <DisableSpecificWarnings>4101;4715</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libraries\boost\stage\lib;$(SolutionDir)\libraries\python\libs;$(SolutionDir)\libraries\sfml\lib</AdditionalLibraryDirectories>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>sfml-network-s.lib;sfml-audio-s.lib;sfml-graphics-s.lib;sfml-system-s.lib;sfml-window-s.lib;opengl32.lib;freetype.lib;winmm.lib;gdi32.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;ws2_32.lib;python36.lib;libboost_atomic-vc141-mt-x64-1_70.lib;libboost_chrono-vc141-mt-x64-1_70.lib;libboost_container-vc141-mt-x64-1_70.lib;libboost_context-vc141-mt-x64-1_70.lib;libboost_contract-vc141-mt-x64-1_70.lib;libboost_coroutine-vc141-mt-x64-1_70.lib;libboost_date_time-vc141-mt-x64-1_70.lib;libboost_exception-vc141-mt-x64-1_70.lib;libboost_fiber-vc141-mt-x64-1_70.lib;libboost_filesystem-vc141-mt-x64-1_70.lib;libboost_graph-vc141-mt-x64-1_70.lib;libboost_iostreams-vc141-mt-x64-1_70.lib;libboost_locale-vc141-mt-x64-1_70.lib;libboost_log_setup-vc141-mt-x64-1_70.lib;libboost_log-vc141-mt-x64-1_70.lib;libboost_math_c99f-vc141-mt-x64-1_70.lib;libboost_math_c99l-vc141-mt-x64-1_70.lib;libboost_math_c99-vc141-mt-x64-1_70.lib;libboost_math_tr1f-vc141-mt-x64-1_70.lib;libboost_math_tr1l-vc141-mt-x64-1_70.lib;libboost_math_tr1-vc141-mt-x64-1_70.lib;libboost_prg_exec_monitor-vc141-mt-x64-1_70.lib;libboost_program_options-vc141-mt-x64-1_70.lib;libboost_python36-vc141-mt-x64-1_70.lib;libboost_random-vc141-mt-x64-1_70.lib;libboost_regex-vc141-mt-x64-1_70.lib;libboost_serialization-vc141-mt-x64-1_70.lib;libboost_stacktrace_noop-vc141-mt-x64-1_70.lib;libboost_stacktrace_windbg_cached-vc141-mt-x64-1_70.lib;libboost_stacktrace_windbg-vc141-mt-x64-1_70.lib;libboost_system-vc141-mt-x64-1_70.lib;libboost_test_exec_monitor-vc141-mt-x64-1_70.lib;libboost_thread-vc141-mt-x64-1_70.lib;libboost_timer-vc141-mt-x64-1_70.lib;libboost_type_erasure-vc141-mt-x64-1_70.lib;libboost_unit_test_framework-vc141-mt-x64-1_70.lib;libboost_wave-vc141-mt-x64-1_70.lib;libboost_wserialization-vc141-mt-x64-1_70.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

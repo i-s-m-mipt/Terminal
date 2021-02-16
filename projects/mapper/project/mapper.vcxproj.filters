@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{59258365-3fc2-4f83-a76e-1653cfb1ef4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\mapper">
+      <UniqueIdentifier>{1c9ed3a0-4cd6-4a53-9b74-c0713b2b813b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\market">
+      <UniqueIdentifier>{e4852c2d-3f16-4318-8575-0a36de56f92b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\logger">
+      <UniqueIdentifier>{9357590f-7695-4b56-8c3c-83f80345fba2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\python">
+      <UniqueIdentifier>{bc66c959-eb53-4ff1-8372-f66884a27475}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\source\main.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\mapper\mapper.cpp">
+      <Filter>source\mapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\source\logger\logger.cpp">
+      <Filter>source\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\market\market.cpp">
+      <Filter>source\market</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\source\mapper\mapper.hpp">
+      <Filter>source\mapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\source\logger\logger.hpp">
+      <Filter>source\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\market\market.hpp">
+      <Filter>source\market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\python\python.hpp">
+      <Filter>source\python</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\source\market\market.py">
+      <Filter>source\market</Filter>
+    </None>
+  </ItemGroup>
+</Project>

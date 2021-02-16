@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{20ef628a-29a3-460d-823e-a2378664c79b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\logger">
+      <UniqueIdentifier>{52fc6b5c-fba0-4f17-b296-0a6399d1bc45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\config">
+      <UniqueIdentifier>{c5caf9b1-79ff-4442-9cf8-4ea7bed2766b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\memory">
+      <UniqueIdentifier>{ac528aec-1e8f-4d42-85b7-96c9eb5b6eee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\memory\view">
+      <UniqueIdentifier>{2d0987cc-7faa-4fe2-be91-a2d569405ea9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\action">
+      <UniqueIdentifier>{b05f8f55-4594-49ee-80a6-7954639b0cb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\action\shared">
+      <UniqueIdentifier>{e038f3fc-295f-499c-af63-c6da448bdd05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\action\shared\market">
+      <UniqueIdentifier>{3ee629e9-b1f7-4938-b3d0-903d538d8a82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\action\shared\stream">
+      <UniqueIdentifier>{ccf4c44d-3df6-4207-9a9a-0f0fefc9ec9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\action\UD0001">
+      <UniqueIdentifier>{260baddd-e223-4eb3-9d3b-7974dde1fbbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\action\UD0003">
+      <UniqueIdentifier>{b79fc65c-79ba-47d0-a610-c6e5ad0f7a91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\action\UD0004">
+      <UniqueIdentifier>{b50fec56-de6d-4e3a-b80a-bb2e8f94f4e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\action\shared\market\quotes">
+      <UniqueIdentifier>{3220ab30-8038-49a9-b84f-b44719c349ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\action\shared\python">
+      <UniqueIdentifier>{0f628235-94be-4fb4-b478-5e56b03218d3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\shared\source\logger\logger.cpp">
+      <Filter>source\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\export.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\source\memory\view\view_base.cpp">
+      <Filter>source\memory\view</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\action\shared\market\market.cpp">
+      <Filter>source\action\shared\market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\action\shared\stream\stream.cpp">
+      <Filter>source\action\shared\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\action\UD0001\UD0001.cpp">
+      <Filter>source\action\UD0001</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\action\UD0003\UD0003.cpp">
+      <Filter>source\action\UD0003</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\action\UD0004\UD0004.cpp">
+      <Filter>source\action\UD0004</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\source\python\python.cpp">
+      <Filter>source\action\shared\python</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\shared\source\logger\logger.hpp">
+      <Filter>source\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\source\config\config.hpp">
+      <Filter>source\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\source\memory\view\view_base.hpp">
+      <Filter>source\memory\view</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\action\shared\market\market.hpp">
+      <Filter>source\action\shared\market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\action\shared\stream\stream.hpp">
+      <Filter>source\action\shared\stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\action\UD0001\UD0001.hpp">
+      <Filter>source\action\UD0001</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\action\action.hpp">
+      <Filter>source\action</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\action\shared\market\quotes\quotes.hpp">
+      <Filter>source\action\shared\market\quotes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\action\UD0003\UD0003.hpp">
+      <Filter>source\action\UD0003</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\action\UD0004\UD0004.hpp">
+      <Filter>source\action\UD0004</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\source\python\python.hpp">
+      <Filter>source\action\shared\python</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\source\action\shared\market\market.py">
+      <Filter>source\action\shared\market</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{59258365-3fc2-4f83-a76e-1653cfb1ef4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\logger">
+      <UniqueIdentifier>{4468de22-e246-445f-a05f-59c9a397f1fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\market">
+      <UniqueIdentifier>{5a73945a-b4cd-49a4-b46f-3395388b3450}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\python">
+      <UniqueIdentifier>{6a104555-bcc5-4774-8fff-1bff647cda07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\trader">
+      <UniqueIdentifier>{9349d180-a0c2-4d97-8e49-dda4e17b5d42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\trader\stream">
+      <UniqueIdentifier>{5cdeb210-ed60-481b-8afe-168c4e7133d9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\source\main.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\source\logger\logger.cpp">
+      <Filter>source\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\market\market.cpp">
+      <Filter>source\market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\trader\trader.cpp">
+      <Filter>source\trader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\source\python\python.cpp">
+      <Filter>source\python</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\trader\stream\stream.cpp">
+      <Filter>source\trader\stream</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\shared\source\logger\logger.hpp">
+      <Filter>source\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\source\python\python.hpp">
+      <Filter>source\python</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\market\market.hpp">
+      <Filter>source\market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\trader\trader.hpp">
+      <Filter>source\trader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\trader\stream\stream.hpp">
+      <Filter>source\trader\stream</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\source\market\market.py">
+      <Filter>source\market</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{59258365-3fc2-4f83-a76e-1653cfb1ef4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\system">
+      <UniqueIdentifier>{6004a75e-0540-4557-8117-f384972a5f9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\logger">
+      <UniqueIdentifier>{4468de22-e246-445f-a05f-59c9a397f1fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\object">
+      <UniqueIdentifier>{ffe3aa9b-87b6-457c-add9-9813d600dbd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\action">
+      <UniqueIdentifier>{0d4eca07-da3e-41c9-b4d2-bac948451031}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\memory">
+      <UniqueIdentifier>{e67aae5f-6539-413f-81ff-fb9d3aa11197}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\config">
+      <UniqueIdentifier>{2d8f0ea2-bd30-446c-bde6-aa5c13e8f4d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\memory\view">
+      <UniqueIdentifier>{953a7934-83ad-4c05-858b-f806166d228e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\memory\node">
+      <UniqueIdentifier>{e73bbfa7-f83b-44cd-abb3-c4f2d179e66f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\memory\link">
+      <UniqueIdentifier>{291b3983-5de3-40fe-ba74-043624a01def}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\python">
+      <UniqueIdentifier>{665d6d63-82ad-4e06-82a1-bd7e5c28569e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\source\main.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\system\system.cpp">
+      <Filter>source\system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\action\action.cpp">
+      <Filter>source\action</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\memory\view\view.cpp">
+      <Filter>source\memory\view</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\memory\memory.cpp">
+      <Filter>source\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\memory\node\node.cpp">
+      <Filter>source\memory\node</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\source\object\object.cpp">
+      <Filter>source\object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\source\logger\logger.cpp">
+      <Filter>source\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\source\memory\view\view_base.cpp">
+      <Filter>source\memory\view</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\source\python\python.cpp">
+      <Filter>source\python</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\source\system\system.hpp">
+      <Filter>source\system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\action\action.hpp">
+      <Filter>source\action</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\memory\node\node.hpp">
+      <Filter>source\memory\node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\memory\memory.hpp">
+      <Filter>source\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\source\logger\logger.hpp">
+      <Filter>source\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\source\object\object.hpp">
+      <Filter>source\object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\source\config\config.hpp">
+      <Filter>source\config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\memory\view\view.hpp">
+      <Filter>source\memory\view</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\source\memory\view\view_base.hpp">
+      <Filter>source\memory\view</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\source\python\python.hpp">
+      <Filter>source\python</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
