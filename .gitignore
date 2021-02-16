@@ -262,8 +262,3 @@ __pycache__/
 
 /libraries
 /support
-/*.sln
-
-**/service/
-**/output/
-**/project/
